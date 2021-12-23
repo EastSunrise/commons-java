@@ -16,6 +16,10 @@
             <artifactId>jackson-databind</artifactId>
             <groupId>com.fasterxml.jackson.core</groupId>
         </dependency>
+        <dependency>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+        </dependency>
     </dependencies>
 
     <modelVersion>4.0.0</modelVersion>
