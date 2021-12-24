@@ -1,13 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.wsg.commons</groupId>
     <artifactId>commons-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
+    <modules>
+        <module>commons-internet</module>
+        <module>commons-lang</module>
+        <module>commons-system</module>
+        <module>commons-web</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <wsg.commons.version>1.0-SNAPSHOT</wsg.commons.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
+        <commons-lang3.version>3.10</commons-lang3.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        <httpclient.version>4.5.13</httpclient.version>
+        <mybatis.version>3.5.7</mybatis.version>
+        <jsoup.version>1.11.3</jsoup.version>
+        <jackson-bom.version>2.11.4</jackson-bom.version>
+        <logback.version>1.2.3</logback.version>
+        <lombok.version>1.18.20</lombok.version>
+        <slf4j.version>1.7.30</slf4j.version>
+        <junit.version>5.7.2</junit.version>
+    </properties>
+
     <dependencies>
         <!--lombok & logback-->
         <dependency>
@@ -26,6 +52,14 @@
             <groupId>ch.qos.logback</groupId>
             <version>${logback.version}</version>
         </dependency>
+
+        <!--junit 5-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -34,7 +68,7 @@
             <dependency>
                 <artifactId>commons-lang</artifactId>
                 <groupId>cn.wsg.commons</groupId>
-                <version>${commons-parent.version}</version>
+                <version>${wsg.commons.version}</version>
             </dependency>
 
             <!--apache commons-->
@@ -53,6 +87,29 @@
                 <groupId>commons-io</groupId>
                 <version>${commons-io.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient-cache</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+
+            <!--jsoup-->
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
+            </dependency>
 
             <!--complete set of compatible versions of Jackson components-->
             <dependency>
@@ -62,25 +119,13 @@
                 <type>pom</type>
                 <version>${jackson-bom.version}</version>
             </dependency>
+
+            <!--mybatis-->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <modules>
-        <module>commons-internet</module>
-        <module>commons-lang</module>
-        <module>commons-system</module>
-    </modules>
-
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <commons-collections4.version>4.4</commons-collections4.version>
-        <commons-lang3.version>3.10</commons-lang3.version>
-        <commons-io.version>2.11.0</commons-io.version>
-        <commons-parent.version>1.0-SNAPSHOT</commons-parent.version>
-        <jackson-bom.version>2.11.4</jackson-bom.version>
-        <logback.version>1.2.3</logback.version>
-        <lombok.version>1.18.20</lombok.version>
-        <slf4j.version>1.7.30</slf4j.version>
-    </properties>
 </project>
