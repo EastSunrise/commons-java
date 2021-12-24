@@ -1,0 +1,55 @@
+package cn.wsg.commons.internet.repository.support;
+
+import cn.wsg.commons.internet.repository.LinkedRepoIterator;
+import cn.wsg.commons.internet.repository.RepoRetrievable;
+import cn.wsg.commons.internet.support.NotFoundException;
+import cn.wsg.commons.internet.support.OtherResponseException;
+
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+
+/**
+ * Base implementation of {@link LinkedRepoIterator}.
+ *
+ * @author Kingen
+ */
+class BasicLinkedRepoIterator<ID, T> implements LinkedRepoIterator<ID, T> {
+
+    private final RepoRetrievable<ID, T> retrievable;
+
+    private final Function<T, ID> next;
+
+    private ID cursor;
+
+    BasicLinkedRepoIterator(RepoRetrievable<ID, T> retrievable, Function<T, ID> next, ID first) {
+        this.retrievable = Objects.requireNonNull(retrievable);
+        this.next = Objects.requireNonNull(next);
+        this.cursor = first;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return cursor != null;
+    }
+
+    @Override
+    public Optional<ID> nextIdentifier() {
+        return Optional.ofNullable(cursor);
+    }
+
+    @Override
+    public T next() throws NotFoundException, OtherResponseException {
+        if (!hasNext()) {
+            throw new NoSuchElementException("Doesn't have next entity.");
+        }
+        T t = retrievable.findById(cursor);
+        try {
+            cursor = next.apply(t);
+        } catch (NoSuchElementException e) {
+            cursor = null;
+        }
+        return t;
+    }
+}
