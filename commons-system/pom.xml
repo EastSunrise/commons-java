@@ -2,7 +2,6 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <artifactId>commons-system</artifactId>
     <dependencies>
         <dependency>
             <artifactId>commons-lang</artifactId>
@@ -13,16 +12,33 @@
             <groupId>org.apache.commons</groupId>
         </dependency>
         <dependency>
+            <artifactId>commons-collections4</artifactId>
+            <groupId>org.apache.commons</groupId>
+        </dependency>
+        <dependency>
             <artifactId>commons-io</artifactId>
             <groupId>commons-io</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>commons-csv</artifactId>
+            <groupId>org.apache.commons</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>poi</artifactId>
+            <groupId>org.apache.poi</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>poi-ooxml</artifactId>
+            <groupId>org.apache.poi</groupId>
         </dependency>
         <dependency>
             <artifactId>jackson-databind</artifactId>
             <groupId>com.fasterxml.jackson.core</groupId>
         </dependency>
     </dependencies>
-
     <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>commons-system</artifactId>
     <parent>
         <artifactId>commons-parent</artifactId>
         <groupId>cn.wsg.commons</groupId>
