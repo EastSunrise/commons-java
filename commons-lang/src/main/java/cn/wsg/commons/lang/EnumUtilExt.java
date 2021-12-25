@@ -1,6 +1,5 @@
 package cn.wsg.commons.lang;
 
-import cn.wsg.commons.lang.function.AliasSupplier;
 import cn.wsg.commons.lang.function.CodeSupplier;
 import cn.wsg.commons.lang.function.IntCodeSupplier;
 import java.util.Arrays;
@@ -110,29 +109,5 @@ public final class EnumUtilExt {
         }
         throw new IllegalArgumentException(
             String.format("Unknown int code '%s' for '%s'", code, clazz));
-    }
-
-    /**
-     * Returns the enum constant of the specified enum type with the specified alias.
-     *
-     * @see AliasSupplier
-     */
-    public static <E extends Enum<E> & AliasSupplier> E valueOfAlias(Class<E> clazz, String alias) {
-        Map<String, String> map = ALIAS.get(clazz);
-        if (null == map) {
-            map = new HashMap<>(16);
-            for (E e : clazz.getEnumConstants()) {
-                for (String t : e.getAlias()) {
-                    MapUtilsExt.putIfAbsentOrElseThrow(map, t, e.name());
-                }
-            }
-            ALIAS.put(clazz, map);
-        }
-        String name = map.get(alias);
-        if (null != name) {
-            return Enum.valueOf(clazz, name);
-        }
-        throw new IllegalArgumentException(
-            String.format("Unknown alias '%s' for '%s'", alias, clazz));
     }
 }

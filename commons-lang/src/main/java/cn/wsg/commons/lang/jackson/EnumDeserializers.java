@@ -1,7 +1,6 @@
 package cn.wsg.commons.lang.jackson;
 
 import cn.wsg.commons.lang.EnumUtilExt;
-import cn.wsg.commons.lang.function.AliasSupplier;
 import cn.wsg.commons.lang.function.CodeSupplier;
 import cn.wsg.commons.lang.function.IntCodeSupplier;
 import com.fasterxml.jackson.core.JsonParser;
@@ -81,28 +80,6 @@ public final class EnumDeserializers {
                 }
                 return (E) ctxt.handleUnexpectedToken(int.class, p.currentToken(), p,
                     "Unexpected token as an integer code to be deserialized to an enum.");
-            }
-        };
-    }
-
-    public static <E extends Enum<E> & AliasSupplier> JsonDeserializer<E> ofAlias(Class<E> eClass) {
-        return new StdScalarDeserializer<>(eClass) {
-            @Override
-            @SuppressWarnings("unchecked")
-            public E deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-                if (p.hasToken(JsonToken.VALUE_NULL)) {
-                    return null;
-                }
-                if (p.hasToken(JsonToken.VALUE_STRING)) {
-                    String text = p.getText();
-                    if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
-                        && StringUtils.isEmpty(text)) {
-                        return null;
-                    }
-                    return EnumUtilExt.valueOfAlias(eClass, text);
-                }
-                return (E) ctxt.handleUnexpectedToken(String.class, p.currentToken(), p,
-                    "Unexpected token as alias to be deserialized to an enum.");
             }
         };
     }
