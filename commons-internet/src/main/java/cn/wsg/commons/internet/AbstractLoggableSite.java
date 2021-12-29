@@ -1,5 +1,6 @@
 package cn.wsg.commons.internet;
 
+import cn.wsg.commons.internet.support.SiteHelper;
 import cn.wsg.commons.internet.support.UnexpectedException;
 import cn.wsg.commons.lang.StringUtilsExt;
 import cn.wsg.commons.lang.SystemConsts;
@@ -28,7 +29,7 @@ public abstract class AbstractLoggableSite<U> extends BaseSite implements Loggab
     private static final File TMPDIR = new File(SystemConsts.SYSTEM_TMPDIR);
 
     protected AbstractLoggableSite(String name, HttpHost host) {
-        super(name, host, defaultClient(), loadContext(host));
+        super(name, host, SiteHelper.defaultClient(), loadContext(host));
     }
 
     protected AbstractLoggableSite(String name, HttpHost host, CloseableHttpClient client,
@@ -37,7 +38,7 @@ public abstract class AbstractLoggableSite<U> extends BaseSite implements Loggab
     }
 
     protected static HttpClientContext loadContext(HttpHost host) {
-        HttpClientContext context = defaultContext();
+        HttpClientContext context = SiteHelper.defaultContext();
         String filepath = StringUtilsExt.toFilename(host.toString()) + ".cookie";
         File file = new File(StringUtils.joinWith(File.separator, TMPDIR, "context", filepath));
         if (file.canRead()) {

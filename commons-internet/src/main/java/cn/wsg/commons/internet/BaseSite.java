@@ -1,16 +1,21 @@
 package cn.wsg.commons.internet;
 
-import cn.wsg.commons.internet.support.*;
+import cn.wsg.commons.internet.support.NotFoundException;
+import cn.wsg.commons.internet.support.OtherResponseException;
+import cn.wsg.commons.internet.support.SiteHelper;
+import cn.wsg.commons.internet.support.UnexpectedException;
+import cn.wsg.commons.internet.support.WrappedStringResponseHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -18,16 +23,8 @@ import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * A basic implementation of a site, providing a default context to execute requests.
@@ -39,14 +36,9 @@ import java.util.Objects;
 @Slf4j
 public class BaseSite implements SiteClient, Closeable {
 
-    protected static final int DEFAULT_TIME_OUT = 30000;
-
     protected static final String METHOD_GET = HttpGet.METHOD_NAME;
 
     protected static final String METHOD_POST = HttpPost.METHOD_NAME;
-
-    protected static final Header USER_AGENT = new BasicHeader(HTTP.USER_AGENT,
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " + "Chrome/91.0.4472.77 Safari/537.36 Edg/91.0.864.37");
 
     private final String name;
 
@@ -57,34 +49,16 @@ public class BaseSite implements SiteClient, Closeable {
     private final HttpClientContext context;
 
     protected BaseSite(String name, HttpHost host) {
-        this(name, host, defaultClient(), defaultContext());
+        this(name, host, SiteHelper.defaultClient(), SiteHelper.defaultContext());
     }
 
-    protected BaseSite(String name, HttpHost host, CloseableHttpClient client, HttpClientContext context) {
-        SiteUtils.validateStatus(getClass());
+    protected BaseSite(String name, HttpHost host, CloseableHttpClient client,
+        HttpClientContext context) {
+        SiteHelper.validateStatus(getClass());
         this.name = name;
         this.host = Objects.requireNonNull(host);
         this.client = Objects.requireNonNull(client);
         this.context = context;
-    }
-
-    protected static HttpHost httpHost(String hostname) {
-        return new HttpHost(hostname);
-    }
-
-    protected static HttpHost httpsHost(String hostname) {
-        return new HttpHost(hostname, -1, "https");
-    }
-
-    protected static CloseableHttpClient defaultClient() {
-        return DecoratedHttpClientBuilder.create().setDefaultHeaders(List.of(USER_AGENT)).setConnectionManager(new PoolingHttpClientConnectionManager()).build();
-    }
-
-    protected static HttpClientContext defaultContext() {
-        HttpClientContext clientContext = HttpClientContext.create();
-        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(DEFAULT_TIME_OUT).setSocketTimeout(DEFAULT_TIME_OUT).build();
-        clientContext.setRequestConfig(requestConfig);
-        return clientContext;
     }
 
     @Override
@@ -98,12 +72,14 @@ public class BaseSite implements SiteClient, Closeable {
     }
 
     @Override
-    public <T> T execute(HttpUriRequest request, ResponseHandler<? extends T> responseHandler) throws IOException {
+    public <T> T execute(HttpUriRequest request, ResponseHandler<? extends T> responseHandler)
+        throws IOException {
         return client.execute(request, responseHandler, context);
     }
 
     @Override
-    public <T> ResponseWrapper<T> getResponseWrapper(RequestBuilder builder, WrappedResponseHandler<T> responseHandler) throws IOException {
+    public <T> ResponseWrapper<T> getResponseWrapper(RequestBuilder builder,
+        WrappedResponseHandler<T> responseHandler) throws IOException {
         return execute(builder.build(), responseHandler);
     }
 
@@ -121,11 +97,12 @@ public class BaseSite implements SiteClient, Closeable {
      * @throws OtherResponseException if an unexpected error occurs when requesting
      * @see #findDocument
      */
-    public Document getDocument(RequestBuilder builder) throws NotFoundException, OtherResponseException {
+    public Document getDocument(RequestBuilder builder)
+        throws NotFoundException, OtherResponseException {
         try {
             return Jsoup.parse(getContent(builder));
         } catch (HttpResponseException e) {
-            throw SiteUtils.handleException(e);
+            throw SiteHelper.handleException(e);
         } catch (IOException e) {
             throw new UnexpectedException(e);
         }
@@ -156,11 +133,12 @@ public class BaseSite implements SiteClient, Closeable {
      * @throws NotFoundException      if the target object is not found
      * @throws OtherResponseException if an unexpected error occurs when requesting
      */
-    public <T> T getObject(RequestBuilder builder, ObjectMapper mapper, Class<? extends T> clazz) throws NotFoundException, OtherResponseException {
+    public <T> T getObject(RequestBuilder builder, ObjectMapper mapper, Class<? extends T> clazz)
+        throws NotFoundException, OtherResponseException {
         try {
             return mapper.readValue(getContent(builder), clazz);
         } catch (HttpResponseException e) {
-            throw SiteUtils.handleException(e);
+            throw SiteHelper.handleException(e);
         } catch (IOException e) {
             throw new UnexpectedException(e);
         }
@@ -173,11 +151,12 @@ public class BaseSite implements SiteClient, Closeable {
      * @throws NotFoundException      if the target object is not found
      * @throws OtherResponseException if an unexpected error occurs when requesting
      */
-    public <T> T getObject(RequestBuilder builder, ObjectMapper mapper, TypeReference<? extends T> type) throws NotFoundException, OtherResponseException {
+    public <T> T getObject(RequestBuilder builder, ObjectMapper mapper,
+        TypeReference<? extends T> type) throws NotFoundException, OtherResponseException {
         try {
             return mapper.readValue(getContent(builder), type);
         } catch (HttpResponseException e) {
-            throw SiteUtils.handleException(e);
+            throw SiteHelper.handleException(e);
         } catch (IOException e) {
             throw new UnexpectedException(e);
         }
@@ -204,7 +183,8 @@ public class BaseSite implements SiteClient, Closeable {
      *
      * @param args arguments to format the path
      */
-    protected final RequestBuilder create(String substation, String method, String path, Object... args) {
+    protected final RequestBuilder create(String substation, String method, String path,
+        Object... args) {
         HttpHost target = host;
         if (StringUtils.isNotBlank(substation)) {
             String hostname = substation + "." + host.getHostName();
