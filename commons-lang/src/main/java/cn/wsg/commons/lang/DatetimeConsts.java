@@ -9,6 +9,11 @@ import java.time.format.DateTimeFormatter;
  */
 public final class DatetimeConsts {
 
+    public static final int SECONDS_PER_MINUTE = 60;
+    public static final int SECONDS_PER_HOUR = SECONDS_PER_MINUTE * 60;
+    public static final int SECONDS_PER_DAY = SECONDS_PER_HOUR * 24;
+    public static final int SECONDS_PER_WEEK = SECONDS_PER_DAY * 7;
+
     /**
      * Common datetime formatters.
      */

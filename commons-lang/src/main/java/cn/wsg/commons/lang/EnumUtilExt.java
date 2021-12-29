@@ -21,7 +21,6 @@ public final class EnumUtilExt {
     private static final Map<Class<?>, Map<String, String>> NAMES = new HashMap<>(1);
     private static final Map<Class<?>, Map<String, String>> CODES = new HashMap<>(1);
     private static final Map<Class<?>, Map<Integer, String>> INT_CODES = new HashMap<>(1);
-    private static final Map<Class<?>, Map<String, String>> ALIAS = new HashMap<>(1);
 
     private EnumUtilExt() {
     }
