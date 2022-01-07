@@ -1,12 +1,11 @@
 package cn.wsg.commons.internet.com.imdb;
 
-import cn.wsg.commons.internet.org.schema.item.Movie;
+import cn.wsg.commons.internet.org.schema.item.TVSeries;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.Duration;
 import java.util.List;
 
 /**
@@ -14,17 +13,11 @@ import java.util.List;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class ImdbMovie extends ImdbCreativeWork implements Movie {
-
-    @JsonProperty("trailer")
-    private ImdbVideoObject trailer;
+public class ImdbTVSeries extends ImdbCreativeWork implements TVSeries {
 
     @JsonProperty("actor")
     private List<ImdbPerson> actors;
 
-    @JsonProperty("director")
-    private List<ImdbPerson> directors;
-
-    @JsonProperty("duration")
-    private Duration duration;
+    @JsonProperty("trailer")
+    private ImdbVideoObject trailer;
 }

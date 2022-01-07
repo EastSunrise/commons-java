@@ -5,16 +5,17 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
-import java.io.IOException;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.IOException;
 
 /**
  * Deserializes a string to an object of target type.
  *
  * @author Kingen
  */
-public abstract class AbstractStringDeserializer<T> extends StdScalarDeserializer<T> {
+public abstract class AbstractStringDeserializer<T> extends StdDeserializer<T> {
 
     private final Class<T> clazz;
 
@@ -31,14 +32,12 @@ public abstract class AbstractStringDeserializer<T> extends StdScalarDeserialize
         }
         if (p.hasToken(JsonToken.VALUE_STRING)) {
             String text = p.getText();
-            if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
-                && StringUtils.isEmpty(text)) {
+            if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT) && StringUtils.isEmpty(text)) {
                 return null;
             }
             return valueOfString(p, clazz, text);
         }
-        return (T) ctxt.handleUnexpectedToken(String.class, p.currentToken(), p,
-            String.format("Unexpected token as a string to be deserialized to %s.", clazz));
+        return (T)ctxt.handleUnexpectedToken(String.class, p.currentToken(), p, String.format("Unexpected token as a string to be deserialized to %s.", clazz));
     }
 
     /**
@@ -50,6 +49,5 @@ public abstract class AbstractStringDeserializer<T> extends StdScalarDeserialize
      * @return the enum object
      * @throws JsonParseException when parsing problems are encountered
      */
-    protected abstract T valueOfString(JsonParser p, Class<T> clazz, String text)
-        throws JsonParseException;
+    protected abstract T valueOfString(JsonParser p, Class<T> clazz, String text) throws JsonParseException;
 }

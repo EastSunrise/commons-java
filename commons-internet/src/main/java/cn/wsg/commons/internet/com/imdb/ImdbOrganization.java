@@ -1,6 +1,6 @@
 package cn.wsg.commons.internet.com.imdb;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import cn.wsg.commons.internet.org.schema.item.Organization;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.AccessLevel;
@@ -14,8 +14,5 @@ import lombok.NoArgsConstructor;
 @JsonTypeName("Organization")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class ImdbOrganization implements ImdbObject, ImdbCreator {
-
-    @JsonProperty("url")
-    private String url;
+public class ImdbOrganization extends ImdbThing implements Organization, ImdbCreator {
 }

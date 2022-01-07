@@ -1,6 +1,5 @@
 package cn.wsg.commons.internet.common;
 
-import cn.wsg.commons.internet.com.imdb.ImdbObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,17 +14,8 @@ import lombok.NoArgsConstructor;
 @JsonTypeName("AggregateRating")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class AggregateRating implements ImdbObject {
+public class AggregateRating extends Rating implements cn.wsg.commons.internet.org.schema.item.AggregateRating {
 
     @JsonProperty("ratingCount")
     private Integer ratingCount;
-
-    @JsonProperty("bestRating")
-    private Double bestRating;
-
-    @JsonProperty("worstRating")
-    private Double worstRating;
-
-    @JsonProperty("ratingValue")
-    private Double ratingValue;
 }

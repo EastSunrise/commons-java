@@ -2,13 +2,14 @@ package cn.wsg.commons.web.mybatis;
 
 import cn.wsg.commons.lang.EnumUtilExt;
 import cn.wsg.commons.lang.function.CodeSupplier;
+import org.apache.ibatis.type.BaseTypeHandler;
+import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.type.TypeHandler;
+
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.apache.ibatis.type.BaseTypeHandler;
-import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.TypeHandler;
 
 /**
  * The common {@link TypeHandler} for enums that are stored as <em>unique</em> codes (returned by
@@ -27,8 +28,7 @@ public class CodeEnumTypeHandler<E extends Enum<E> & CodeSupplier> extends BaseT
     }
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, E parameter, JdbcType jdbcType)
-        throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, E parameter, JdbcType jdbcType) throws SQLException {
         ps.setString(i, parameter.getCode());
     }
 

@@ -1,6 +1,5 @@
-package cn.wsg.commons.internet.com.douban;
+package cn.wsg.commons.internet.common;
 
-import cn.wsg.commons.internet.org.schema.item.Book;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -12,11 +11,17 @@ import lombok.NoArgsConstructor;
  * @author Kingen
  */
 @Getter
-@JsonTypeName("Book")
+@JsonTypeName("Rating")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class DoubanBook extends DoubanCreativeWork implements Book {
+public class Rating implements cn.wsg.commons.internet.org.schema.item.Rating {
 
-    @JsonProperty("isbn")
-    private String isbn;
+    @JsonProperty("bestRating")
+    private Double bestRating;
+
+    @JsonProperty("worstRating")
+    private Double worstRating;
+
+    @JsonProperty("ratingValue")
+    private Double ratingValue;
 }

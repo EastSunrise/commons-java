@@ -3,7 +3,7 @@ package cn.wsg.commons.internet.com.douban;
 /**
  * @author Kingen
  */
-class BasicIndex implements DoubanObject {
+class BasicIndex {
 
     private final long id;
     private final DoubanCatalog catalog;

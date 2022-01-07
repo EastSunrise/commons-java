@@ -2,12 +2,10 @@ package cn.wsg.commons.lang;
 
 import cn.wsg.commons.lang.function.CodeSupplier;
 import cn.wsg.commons.lang.function.IntCodeSupplier;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Utility for Java enums.
@@ -17,28 +15,19 @@ import java.util.stream.Collectors;
  */
 public final class EnumUtilExt {
 
-    private static final Map<Class<?>, Map<?, String>> KEYS = new HashMap<>(1);
-    private static final Map<Class<?>, Map<String, String>> NAMES = new HashMap<>(1);
-    private static final Map<Class<?>, Map<String, String>> CODES = new HashMap<>(1);
-    private static final Map<Class<?>, Map<Integer, String>> INT_CODES = new HashMap<>(1);
-
     private EnumUtilExt() {
     }
 
     /**
      * Returns the enum constant of the specified enum type with the specified key.
+     *
+     * @param keyMapper function to generate a <strong>unique</strong> key for each enum
      */
-    public static <K, E extends Enum<E>>
-    E valueOfKey(Class<E> clazz, K key, Function<E, K> keyMapper) {
-        Map<?, String> map = KEYS.get(clazz);
-        if (null == map) {
-            map = Arrays.stream(clazz.getEnumConstants())
-                .collect(Collectors.toMap(keyMapper, Enum::name));
-            KEYS.put(clazz, map);
-        }
-        String name = map.get(key);
-        if (null != name) {
-            return Enum.valueOf(clazz, name);
+    public static <K, E extends Enum<E>> E valueOfKey(Class<E> clazz, K key, Function<E, K> keyMapper) {
+        for (E e : clazz.getEnumConstants()) {
+            if (Objects.equals(keyMapper.apply(e), key)) {
+                return e;
+            }
         }
         throw new IllegalArgumentException(String.format("Unknown key '%s' for '%s'", key, clazz));
     }
@@ -49,20 +38,13 @@ public final class EnumUtilExt {
      *
      * @see #valueOfKey(Class, Object, Function)
      */
-    public static <E extends Enum<E>>
-    E valueOfIgnoreCase(Class<E> clazz, String target) {
-        Map<String, String> map = NAMES.get(clazz);
-        if (null == map) {
-            map = Arrays.stream(clazz.getEnumConstants())
-                .collect(Collectors.toMap(e -> e.name().toUpperCase(Locale.ROOT), Enum::name));
-            NAMES.put(clazz, map);
+    public static <E extends Enum<E>> E valueOfIgnoreCase(Class<E> clazz, String target) {
+        for (E e : clazz.getEnumConstants()) {
+            if (StringUtils.equalsIgnoreCase(e.name(), target)) {
+                return e;
+            }
         }
-        String name = map.get(target.toUpperCase(Locale.ROOT));
-        if (null != name) {
-            return Enum.valueOf(clazz, name);
-        }
-        throw new IllegalArgumentException(
-            String.format("Unknown name '%s' for '%s'", target, clazz));
+        throw new IllegalArgumentException(String.format("Unknown name '%s' for '%s'", target, clazz));
     }
 
     /**
@@ -72,20 +54,8 @@ public final class EnumUtilExt {
      * @see #valueOfKey(Class, Object, Function)
      * @see CodeSupplier
      */
-    public static <E extends Enum<E> & CodeSupplier>
-    E valueOfCode(Class<E> clazz, String code) {
-        Map<String, String> map = CODES.get(clazz);
-        if (null == map) {
-            map = Arrays.stream(clazz.getEnumConstants())
-                .collect(Collectors.toMap(CodeSupplier::getCode, Enum::name));
-            CODES.put(clazz, map);
-        }
-        String name = map.get(code);
-        if (null != name) {
-            return Enum.valueOf(clazz, name);
-        }
-        throw new IllegalArgumentException(
-            String.format("Unknown code '%s' for '%s'", code, clazz));
+    public static <E extends Enum<E> & CodeSupplier> E valueOfCode(Class<E> clazz, String code) {
+        return valueOfKey(clazz, code, CodeSupplier::getCode);
     }
 
     /**
@@ -96,17 +66,6 @@ public final class EnumUtilExt {
      * @see IntCodeSupplier
      */
     public static <E extends Enum<E> & IntCodeSupplier> E valueOfIntCode(Class<E> clazz, int code) {
-        Map<Integer, String> map = INT_CODES.get(clazz);
-        if (null == map) {
-            map = Arrays.stream(clazz.getEnumConstants())
-                .collect(Collectors.toMap(IntCodeSupplier::getIntCode, Enum::name));
-            INT_CODES.put(clazz, map);
-        }
-        String name = map.get(code);
-        if (null != name) {
-            return Enum.valueOf(clazz, name);
-        }
-        throw new IllegalArgumentException(
-            String.format("Unknown int code '%s' for '%s'", code, clazz));
+        return valueOfKey(clazz, code, IntCodeSupplier::getIntCode);
     }
 }

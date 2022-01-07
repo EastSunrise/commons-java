@@ -1,10 +1,10 @@
 package cn.wsg.commons.internet.com.imdb;
 
-import cn.wsg.commons.lang.Language;
+import cn.wsg.commons.internet.common.Rating;
+import cn.wsg.commons.internet.org.schema.item.Review;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,23 +16,14 @@ import lombok.NoArgsConstructor;
 @JsonTypeName("Review")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class ImdbReview implements ImdbObject {
+public class ImdbReview extends ImdbCreativeWork implements Review {
 
     @JsonProperty("itemReviewed")
-    private ImdbCreativeWork itemReviewed;
-
-    @JsonProperty("author")
-    private ImdbPerson author;
-
-    @JsonProperty("dateCreated")
-    private LocalDate dateCreated;
-
-    @JsonProperty("inLanguage")
-    private Language inLanguage;
-
-    @JsonProperty("name")
-    private String name;
+    private ImdbThing itemReviewed;
 
     @JsonProperty("reviewBody")
     private String reviewBody;
+
+    @JsonProperty("reviewRating")
+    private Rating reviewRating;
 }

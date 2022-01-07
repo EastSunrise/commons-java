@@ -1,15 +1,12 @@
 package cn.wsg.commons.lang;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Utility to check objects or conditions before operations.
@@ -21,18 +18,19 @@ public final class AssertUtils {
     private AssertUtils() {
     }
 
-    public static <E extends Comparable<? super E>> boolean isMonotonous(Iterator<E> iterator) {
-        return isMonotonous(iterator, Comparator.comparing(Function.identity()));
+    public static <E extends Comparable<? super E>> boolean isMonotonous(Iterable<E> iterable) {
+        return isMonotonous(iterable, Comparator.comparing(Function.identity()));
     }
 
     /**
      * Tests whether the given iterator is monotonous by the specified comparator.
      *
-     * @param iterator the iterator to be tested
+     * @param iterable the iterable object to be tested
      * @return {@code false} if any element is <i>largest</i> (by the specified comparator) than the
      * next one, otherwise {@code true}
      */
-    public static <E> boolean isMonotonous(Iterator<E> iterator, Comparator<? super E> comparator) {
+    public static <E> boolean isMonotonous(Iterable<E> iterable, Comparator<? super E> comparator) {
+        Iterator<E> iterator = iterable.iterator();
         if (!iterator.hasNext()) {
             return true;
         }
@@ -63,8 +61,7 @@ public final class AssertUtils {
     /**
      * Validate range of an object, [fromInclusive, toExclusive)
      */
-    public static <T extends Comparable<T>>
-    T requireRange(T target, T fromInclusive, T toExclusive) {
+    public static <T extends Comparable<T>> T requireRange(T target, T fromInclusive, T toExclusive) {
         Objects.requireNonNull(target);
         if (null == fromInclusive && null == toExclusive) {
             return target;
@@ -82,9 +79,7 @@ public final class AssertUtils {
             return target;
         }
         if (0 > target.compareTo(fromInclusive) || 0 <= target.compareTo(toExclusive)) {
-            throw new IllegalArgumentException(
-                "Target must be within range fromInclusive " + fromInclusive + " toExclusive "
-                    + toExclusive);
+            throw new IllegalArgumentException("Target must be within range fromInclusive " + fromInclusive + " toExclusive " + toExclusive);
         }
         return target;
     }

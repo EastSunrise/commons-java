@@ -1,6 +1,6 @@
 package cn.wsg.commons.internet.com.imdb;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import cn.wsg.commons.internet.org.schema.item.ImageObject;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.AccessLevel;
@@ -14,8 +14,5 @@ import lombok.NoArgsConstructor;
 @JsonTypeName("ImageObject")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class ImdbImageObject implements ImdbObject {
-
-    @JsonProperty("contentUrl")
-    private String contentUrl;
+public class ImdbImageObject extends ImdbMediaObject implements ImageObject {
 }

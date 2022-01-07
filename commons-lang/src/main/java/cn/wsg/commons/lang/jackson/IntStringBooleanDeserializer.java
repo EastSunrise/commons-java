@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
+
 import java.io.IOException;
 
 /**
@@ -32,12 +33,11 @@ public class IntStringBooleanDeserializer extends AbstractStringDeserializer<Boo
                 return true;
             }
         }
-        return (Boolean) ctxt.handleUnexpectedToken(getValueType(), p);
+        return (Boolean)ctxt.handleUnexpectedToken(getValueType(), p);
     }
 
     @Override
-    protected Boolean valueOfString(JsonParser p, Class<Boolean> clazz, String text)
-        throws JsonParseException {
+    protected Boolean valueOfString(JsonParser p, Class<Boolean> clazz, String text) throws JsonParseException {
         text = text.trim();
         if (FALSE.equals(text)) {
             return false;

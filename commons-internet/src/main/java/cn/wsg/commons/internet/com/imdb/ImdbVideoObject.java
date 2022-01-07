@@ -1,5 +1,6 @@
 package cn.wsg.commons.internet.com.imdb;
 
+import cn.wsg.commons.internet.org.schema.item.VideoObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -14,20 +15,8 @@ import lombok.NoArgsConstructor;
 @JsonTypeName("VideoObject")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class ImdbVideoObject implements ImdbObject {
-
-    @JsonProperty("name")
-    private String name;
-
-    @JsonProperty("embedUrl")
-    private String embedUrl;
+public class ImdbVideoObject extends ImdbMediaObject implements VideoObject {
 
     @JsonProperty("thumbnail")
     private ImdbImageObject thumbnail;
-
-    @JsonProperty("thumbnailUrl")
-    private String thumbnailUrl;
-
-    @JsonProperty("description")
-    private String description;
 }

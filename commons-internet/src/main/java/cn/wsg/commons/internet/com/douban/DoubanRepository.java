@@ -6,6 +6,7 @@ import cn.wsg.commons.internet.page.PageIndex;
 import cn.wsg.commons.internet.support.LoginException;
 import cn.wsg.commons.internet.support.NotFoundException;
 import cn.wsg.commons.internet.support.OtherResponseException;
+
 import java.util.List;
 
 /**
@@ -48,8 +49,7 @@ public interface DoubanRepository extends Loggable<Long> {
      * @throws OtherResponseException   if an unexpected error occurs
      * @throws IllegalArgumentException if the keyword is blank
      */
-    Page<SubjectIndex> searchGlobally(String keyword, PageIndex page, DoubanCatalog catalog)
-        throws OtherResponseException;
+    Page<SubjectIndex> searchGlobally(String keyword, PageIndex page, DoubanCatalog catalog) throws OtherResponseException;
 
     /**
      * Searches subjects related to the specified keyword under the specified topic.
@@ -63,6 +63,15 @@ public interface DoubanRepository extends Loggable<Long> {
     List<SubjectIndex> search(DoubanCatalog catalog, String keyword) throws OtherResponseException;
 
     /**
+     * Retrieves top250 movies on the site.
+     *
+     * @param pageIndex pagination information
+     * @return ranked subject indices in page
+     * @throws OtherResponseException if an unexpected error occurs
+     */
+    Page<RankedSubject> top250(PageIndex pageIndex) throws OtherResponseException;
+
+    /**
      * Retrieves marked subjects of the specified user.
      *
      * @param catalog catalog of the subjects to be queried
@@ -73,8 +82,8 @@ public interface DoubanRepository extends Loggable<Long> {
      * @throws NotFoundException      if the user is not found
      * @throws OtherResponseException if an unexpected error occurs
      */
-    Page<MarkedSubject> findUserSubjects(DoubanCatalog catalog, long userId, MarkedStatus status,
-        PageIndex page) throws NotFoundException, OtherResponseException;
+    Page<MarkedSubject> findUserSubjects(DoubanCatalog catalog, long userId, MarkedStatus status, PageIndex page)
+        throws NotFoundException, OtherResponseException;
 
     /**
      * Retrieves collected creators of the specified user.
@@ -86,8 +95,7 @@ public interface DoubanRepository extends Loggable<Long> {
      * @throws NotFoundException      if the user is not found
      * @throws OtherResponseException if an unexpected error occurs
      */
-    Page<PersonIndex> findUserCreators(DoubanCatalog catalog, long userId, PageIndex page)
-        throws NotFoundException, OtherResponseException;
+    Page<PersonIndex> findUserCreators(DoubanCatalog catalog, long userId, PageIndex page) throws NotFoundException, OtherResponseException;
 
     /**
      * Retrieves the video of the specified id.
@@ -97,7 +105,7 @@ public interface DoubanRepository extends Loggable<Long> {
      * @throws NotFoundException      if the video is not found
      * @throws OtherResponseException if an unexpected error occurs
      */
-    DoubanVideo findMovieById(long id) throws NotFoundException, OtherResponseException;
+    DoubanVideo findVideoById(long id) throws NotFoundException, OtherResponseException;
 
     /**
      * Retrieves the book of the specified id.
@@ -118,6 +126,5 @@ public interface DoubanRepository extends Loggable<Long> {
      * @throws OtherResponseException if an unexpected error occurs
      * @throws LoginException         if not logged-in
      */
-    long getDbIdByImdbId(String imdbId)
-        throws NotFoundException, OtherResponseException, LoginException;
+    long getDbIdByImdbId(String imdbId) throws NotFoundException, OtherResponseException, LoginException;
 }

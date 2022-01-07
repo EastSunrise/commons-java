@@ -1,16 +1,22 @@
 package cn.wsg.commons.internet.com.douban;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Kingen
  */
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = DoubanMovie.class, name = "Movie"),
-    @JsonSubTypes.Type(value = DoubanSeries.class, name = "TVSeries")
-})
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
-public interface DoubanVideo extends DoubanSubject {
+@Getter
+public class DoubanVideo extends DoubanCreativeWork {
+
+    @Setter(AccessLevel.PACKAGE)
+    private String zhTitle;
+
+    @Setter(AccessLevel.PACKAGE)
+    private String originalTitle;
+
+    @Setter(AccessLevel.PACKAGE)
+    private String imdbId;
 
 }

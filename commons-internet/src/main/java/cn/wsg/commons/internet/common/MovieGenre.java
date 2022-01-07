@@ -1,39 +1,34 @@
 package cn.wsg.commons.internet.common;
 
-
 /**
- * Enum for genres of a movie or series, with an English display name and a Chinese display name.
- *
  * @author Kingen
  */
 public enum MovieGenre {
+
     /**
-     * Kinds of genres
+     * Genres defined on both IMDb and Douban.
+     *
+     * @see <a href="https://help.imdb.com/article/contribution/titles/genres/GZDRMS6R742JRGAG">Genres</a>
      */
     ACTION("Action", "动作"),
-    ADULT("Adult", "成人"),
+    ADULT("Adult", null),
     ADVENTURE("Adventure", "冒险"),
     ANIMATION("Animation", "动画"),
     BIOGRAPHY("Biography", "传记"),
-    CHILD("Child", "儿童"),
     COMEDY("Comedy", "喜剧"),
-    COSTUME("Costume", "古装"),
     CRIME("Crime", "犯罪"),
-    DISASTER("Disaster", "灾难"),
     DOCUMENTARY("Documentary", "纪录片"),
     DRAMA("Drama", "剧情"),
-    EROTIC("Erotic", "情色"),
     FAMILY("Family", "家庭"),
     FANTASY("Fantasy", "奇幻"),
-    GAME_SHOW("Game-Show", "电视竞赛"),
-    GAY("Gay", "同性"),
-    GHOST("Ghost", "鬼怪"),
+    FILM_NOIR("Film-Noir", "黑色电影"),
+    GAME_SHOW("Game-Show", null),
     HISTORY("History", "历史"),
     HORROR("Horror", "恐怖"),
-    MARTIAL_ART("Martial Art", "武侠"),
-    MUSIC("Music", "音乐"),
     MUSICAL("Musical", "歌舞"),
+    MUSIC("Music", "音乐"),
     MYSTERY("Mystery", "悬疑"),
+    NEWS("News", null),
     REALITY_TV("Reality-TV", "真人秀"),
     ROMANCE("Romance", "爱情"),
     SCI_FI("Sci-Fi", "科幻"),
@@ -43,7 +38,18 @@ public enum MovieGenre {
     THRILLER("Thriller", "惊悚"),
     WAR("War", "战争"),
     WESTERN("Western", "西部"),
-    NEWS("News", "资讯");
+
+    // extended genres on Douban
+
+    ANCIENT_COSTUME("Ancient-Costum", "古装"),
+    DISASTER("Disaster", "灾难"),
+    EROTICA("Erotica", "情色"),
+    GAY("Gay/Lesbian", "同性"),
+    KIDS("Kids", "儿童"),
+    MARTIAL_ARTS("Martial-Arts", "武侠"),
+    OPERA("Opera", "戏曲"),
+    Ghost(null, "鬼怪"),
+    ;
 
     private final String enTitle;
     private final String zhTitle;
