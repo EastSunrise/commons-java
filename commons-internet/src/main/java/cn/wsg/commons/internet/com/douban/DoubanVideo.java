@@ -1,5 +1,7 @@
 package cn.wsg.commons.internet.com.douban;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +10,12 @@ import lombok.Setter;
  * @author Kingen
  */
 @Getter
-public class DoubanVideo extends DoubanCreativeWork {
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = DoubanMovie.class, name = "Movie"),
+    @JsonSubTypes.Type(value = DoubanTVSeries.class, name = "TVSeries")
+})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+public abstract class DoubanVideo extends DoubanCreativeWork {
 
     @Setter(AccessLevel.PACKAGE)
     private String zhTitle;

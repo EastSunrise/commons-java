@@ -17,10 +17,10 @@ public interface EnumMapping<E extends Enum<E>> {
     E getEnum();
 
     /**
-     * Returns whether the enum object contains the value.
+     * Returns whether the enum object matches the value.
      *
      * @param value the value to be checked
-     * @return {@code true} if contains
+     * @return {@code true} if matched
      */
-    boolean contains(String value);
+    boolean match(String value);
 }

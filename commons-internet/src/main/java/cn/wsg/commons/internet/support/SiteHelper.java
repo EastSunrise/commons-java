@@ -14,6 +14,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.cache.CachingHttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
+import java.io.IOException;
+
 /**
  * Utility for site-related operations.
  *
@@ -26,16 +28,14 @@ public final class SiteHelper {
     public static final int DEFAULT_TIME_OUT = 30000;
 
     public static CloseableHttpClient defaultClient() {
-        return CachingHttpClientBuilder.create()
-            .setHttpCacheStorage(new FileHttpCacheStorage())
-            .setConnectionManager(new PoolingHttpClientConnectionManager())
-            .build();
+        return CachingHttpClientBuilder.create().setHttpCacheStorage(new FileHttpCacheStorage())
+            .setConnectionManager(new PoolingHttpClientConnectionManager()).build();
     }
 
     public static HttpClientContext defaultContext() {
         HttpClientContext clientContext = HttpClientContext.create();
-        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(DEFAULT_TIME_OUT)
-            .setSocketTimeout(DEFAULT_TIME_OUT).build();
+        RequestConfig requestConfig =
+            RequestConfig.custom().setConnectTimeout(DEFAULT_TIME_OUT).setSocketTimeout(DEFAULT_TIME_OUT).build();
         clientContext.setRequestConfig(requestConfig);
         return clientContext;
     }
@@ -68,16 +68,15 @@ public final class SiteHelper {
     }
 
     /**
-     * Splits a {@link HttpResponseException}.
+     * Handles the exceptions when executing requests.
      *
-     * @return other exception
-     * @throws NotFoundException if the status code is 404
+     * @return NotFoundException if the status code is 404
      */
-    public static OtherResponseException handleException(HttpResponseException e)
-        throws NotFoundException {
-        if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+    public static UnexpectedException handleException(IOException e) throws NotFoundException {
+        if (e instanceof HttpResponseException
+            && ((HttpResponseException)e).getStatusCode() == HttpStatus.SC_NOT_FOUND) {
             throw new NotFoundException(e.getMessage());
         }
-        return new OtherResponseException(e);
+        return new UnexpectedException(e);
     }
 }

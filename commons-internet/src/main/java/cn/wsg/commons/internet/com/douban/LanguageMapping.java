@@ -1,13 +1,16 @@
 package cn.wsg.commons.internet.com.douban;
 
 import cn.wsg.commons.internet.util.EnumMapping;
+import cn.wsg.commons.lang.EnumUtilExt;
 import cn.wsg.commons.lang.Language;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.Objects;
 
 /**
  * @author Kingen
  */
-enum LanguageMapping implements EnumMapping<Language> {
+public enum LanguageMapping implements EnumMapping<Language> {
 
     CMN(Language.CMN, "汉语普通话", "普通话", "国语"),
     QLE(Language.QLE, "山西话"),
@@ -45,7 +48,7 @@ enum LanguageMapping implements EnumMapping<Language> {
     NAP(Language.NAP, "那不勒斯语"),
     GSW(Language.GSW, "瑞士德语"),
     NLD(Language.NLD, "弗拉芒语"),
-    QHB(Language.QHB, "上海话"),
+    QHB(Language.QHB, "上海话", "沪语"),
     QLD(Language.QLD, "四川话"),
     SJN(Language.SJN, "辛达林语"),
     QYA(Language.QYA, "昆雅语"),
@@ -62,13 +65,21 @@ enum LanguageMapping implements EnumMapping<Language> {
         this.names = names;
     }
 
+    public static Language of(String value) {
+        try {
+            return EnumUtilExt.valueOf(Language.class, value, (k, e) -> Objects.equals(k, e.getZhName()));
+        } catch (IllegalArgumentException ex) {
+            return EnumUtilExt.valueOf(LanguageMapping.class, value, (k, e) -> e.match(k)).getEnum();
+        }
+    }
+
     @Override
     public Language getEnum() {
         return language;
     }
 
     @Override
-    public boolean contains(String value) {
+    public boolean match(String value) {
         return ArrayUtils.contains(names, value);
     }
 }

@@ -2,15 +2,15 @@ package cn.wsg.commons.internet.com.clcindex;
 
 import cn.wsg.commons.internet.BaseSite;
 import cn.wsg.commons.internet.support.CssSelectors;
-import cn.wsg.commons.internet.support.OtherResponseException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.http.HttpHost;
 import org.apache.http.client.methods.RequestBuilder;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Retrieves the details of Chinese Library Classification.
@@ -29,11 +29,11 @@ public class ClcIndex extends BaseSite {
      *
      * @return the list of 22 basic categories
      */
-    public List<CategoryNode> findAll() throws OtherResponseException {
+    public List<CategoryNode> findAll() {
         return findChildren(httpGet(""));
     }
 
-    private List<CategoryNode> findChildren(RequestBuilder builder) throws OtherResponseException {
+    private List<CategoryNode> findChildren(RequestBuilder builder) {
         Element table = findDocument(builder).getElementById("catTable");
         Elements items = table.select("tr[name=item-row]");
         if (items.isEmpty()) {

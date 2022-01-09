@@ -1,10 +1,7 @@
 package cn.wsg.commons.system.cmd.ffmpeg;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import java.io.IOException;
+import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 import org.apache.commons.lang3.math.Fraction;
 
 /**
@@ -12,7 +9,7 @@ import org.apache.commons.lang3.math.Fraction;
  *
  * @author Kingen
  */
-public class FractionDeserializer extends StdDeserializer<Fraction> {
+public class FractionDeserializer extends FromStringDeserializer<Fraction> {
 
     public static final int RATIO_SEPARATOR = ':';
     private static final String ZERO = "0/0";
@@ -22,24 +19,16 @@ public class FractionDeserializer extends StdDeserializer<Fraction> {
     }
 
     @Override
-    public Fraction deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        if (p.hasToken(JsonToken.VALUE_STRING)) {
-            String text = p.getText();
-            if (ZERO.equals(text)) {
-                return Fraction.ZERO;
-            }
-            int pos = text.indexOf(RATIO_SEPARATOR);
-            if (0 <= pos) {
-                int numerator = Integer.parseInt(text.substring(0, pos));
-                int denominator = Integer.parseInt(text.substring(pos + 1));
-                return Fraction.getFraction(numerator, denominator);
-            }
-            return Fraction.getFraction(text);
+    protected Fraction _deserialize(String value, DeserializationContext ctxt) {
+        if (ZERO.equals(value)) {
+            return Fraction.ZERO;
         }
-        if (p.hasToken(JsonToken.VALUE_NUMBER_FLOAT)) {
-            return Fraction.getFraction(p.getDoubleValue());
+        int pos = value.indexOf(RATIO_SEPARATOR);
+        if (0 <= pos) {
+            int numerator = Integer.parseInt(value.substring(0, pos));
+            int denominator = Integer.parseInt(value.substring(pos + 1));
+            return Fraction.getFraction(numerator, denominator);
         }
-        return (Fraction) ctxt.handleUnexpectedToken(Fraction.class, p.currentToken(), p,
-            "Unexpected token as a fraction.");
+        return Fraction.getFraction(value);
     }
 }

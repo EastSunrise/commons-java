@@ -7,8 +7,6 @@ import cn.wsg.commons.lang.Language;
 import cn.wsg.commons.lang.Region;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,11 +19,7 @@ import java.util.List;
  * @author Kingen
  */
 @Getter
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = DoubanMovie.class, name = "Movie"), @JsonSubTypes.Type(value = DoubanTVSeries.class, name = "TVSeries")
-})
 @JsonIgnoreProperties("@context")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public abstract class DoubanCreativeWork extends DoubanThing implements CreativeWork {
 

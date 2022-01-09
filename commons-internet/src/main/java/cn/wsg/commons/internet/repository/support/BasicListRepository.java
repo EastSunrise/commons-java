@@ -5,7 +5,6 @@ import cn.wsg.commons.internet.repository.ListRepository;
 import cn.wsg.commons.internet.repository.RepoIterator;
 import cn.wsg.commons.internet.repository.RepoRetrievable;
 import cn.wsg.commons.internet.support.NotFoundException;
-import cn.wsg.commons.internet.support.OtherResponseException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,7 +85,7 @@ class BasicListRepository<ID, T> implements ListRepository<ID, T> {
     }
 
     @Override
-    public List<T> entities() throws NotFoundException, OtherResponseException {
+    public List<T> entities() throws NotFoundException {
         List<T> entities = new ArrayList<>(size());
         for (ID identifier : identifiers) {
             T byId = findById(identifier);
@@ -96,7 +95,7 @@ class BasicListRepository<ID, T> implements ListRepository<ID, T> {
     }
 
     @Override
-    public T findById(ID id) throws NotFoundException, OtherResponseException {
+    public T findById(ID id) throws NotFoundException {
         return retrievable.findById(id);
     }
 }

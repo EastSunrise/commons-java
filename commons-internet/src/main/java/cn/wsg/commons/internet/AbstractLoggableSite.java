@@ -1,14 +1,8 @@
 package cn.wsg.commons.internet;
 
 import cn.wsg.commons.internet.support.SiteHelper;
-import cn.wsg.commons.internet.support.UnexpectedException;
 import cn.wsg.commons.lang.StringUtilsExt;
 import cn.wsg.commons.lang.SystemConsts;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +10,8 @@ import org.apache.http.HttpHost;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.CloseableHttpClient;
+
+import java.io.*;
 
 /**
  * This class provides a skeletal implementation of a loggable site whose cookies that containing
@@ -32,8 +28,7 @@ public abstract class AbstractLoggableSite<U> extends BaseSite implements Loggab
         super(name, host, SiteHelper.defaultClient(), loadContext(host));
     }
 
-    protected AbstractLoggableSite(String name, HttpHost host, CloseableHttpClient client,
-        HttpClientContext context) {
+    protected AbstractLoggableSite(String name, HttpHost host, CloseableHttpClient client, HttpClientContext context) {
         super(name, host, client, context);
     }
 
@@ -42,13 +37,12 @@ public abstract class AbstractLoggableSite<U> extends BaseSite implements Loggab
         String filepath = StringUtilsExt.toFilename(host.toString()) + ".cookie";
         File file = new File(StringUtils.joinWith(File.separator, TMPDIR, "context", filepath));
         if (file.canRead()) {
-            try (ObjectInputStream stream = new ObjectInputStream(
-                FileUtils.openInputStream(file))) {
+            try (ObjectInputStream stream = new ObjectInputStream(FileUtils.openInputStream(file))) {
                 log.trace("Read cookies from {}.", file.getPath());
-                CookieStore cookieStore = (CookieStore) stream.readObject();
+                CookieStore cookieStore = (CookieStore)stream.readObject();
                 context.setCookieStore(cookieStore);
             } catch (IOException | ClassNotFoundException e) {
-                throw new UnexpectedException(e);
+                log.warn("Failed to load context of {}", host.toString());
             }
         }
         return context;

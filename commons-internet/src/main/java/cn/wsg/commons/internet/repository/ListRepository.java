@@ -1,7 +1,6 @@
 package cn.wsg.commons.internet.repository;
 
 import cn.wsg.commons.internet.support.NotFoundException;
-import cn.wsg.commons.internet.support.OtherResponseException;
 
 import java.util.List;
 
@@ -64,9 +63,8 @@ public interface ListRepository<ID, T> extends Repository<ID, T>, RepoRetrievabl
      * @throws IndexOutOfBoundsException if the index is out of range ({@code index < 0 || index >=
      *                                   size()})
      * @throws NotFoundException         if the entity at the specified position is not found
-     * @throws OtherResponseException    if an unexpected error occurs when requesting
      */
-    default T get(int index) throws NotFoundException, OtherResponseException {
+    default T get(int index) throws NotFoundException {
         return findById(getIdentifier(index));
     }
 
@@ -140,8 +138,7 @@ public interface ListRepository<ID, T> extends Repository<ID, T>, RepoRetrievabl
      * Retrieves the list of all entities contained in this repository.
      *
      * @return the list of all entities
-     * @throws NotFoundException      if amy entity is not found
-     * @throws OtherResponseException if an unexpected error occurs when requesting
+     * @throws NotFoundException if amy entity is not found
      */
-    List<T> entities() throws NotFoundException, OtherResponseException;
+    List<T> entities() throws NotFoundException;
 }

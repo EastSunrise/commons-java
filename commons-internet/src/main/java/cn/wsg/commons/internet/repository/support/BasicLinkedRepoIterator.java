@@ -3,7 +3,6 @@ package cn.wsg.commons.internet.repository.support;
 import cn.wsg.commons.internet.repository.LinkedRepoIterator;
 import cn.wsg.commons.internet.repository.RepoRetrievable;
 import cn.wsg.commons.internet.support.NotFoundException;
-import cn.wsg.commons.internet.support.OtherResponseException;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -40,7 +39,7 @@ class BasicLinkedRepoIterator<ID, T> implements LinkedRepoIterator<ID, T> {
     }
 
     @Override
-    public T next() throws NotFoundException, OtherResponseException {
+    public T next() throws NotFoundException {
         if (!hasNext()) {
             throw new NoSuchElementException("Doesn't have next entity.");
         }

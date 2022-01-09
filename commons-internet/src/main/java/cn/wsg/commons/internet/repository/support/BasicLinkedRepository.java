@@ -5,7 +5,6 @@ import cn.wsg.commons.internet.repository.LinkedRepository;
 import cn.wsg.commons.internet.repository.RepoIterator;
 import cn.wsg.commons.internet.repository.RepoRetrievable;
 import cn.wsg.commons.internet.support.NotFoundException;
-import cn.wsg.commons.internet.support.OtherResponseException;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -57,7 +56,7 @@ class BasicLinkedRepository<ID, T> implements LinkedRepository<ID, T> {
     }
 
     @Override
-    public T findById(ID id) throws NotFoundException, OtherResponseException {
+    public T findById(ID id) throws NotFoundException {
         return retrievable.findById(id);
     }
 }

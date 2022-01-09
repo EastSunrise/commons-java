@@ -9,10 +9,7 @@ import cn.wsg.commons.internet.util.URIUtil;
 import cn.wsg.commons.lang.Language;
 import cn.wsg.commons.lang.RegExUtilsExt;
 import cn.wsg.commons.lang.Region;
-import cn.wsg.commons.lang.jackson.AbstractStringDeserializer;
 import cn.wsg.commons.lang.jackson.EnumDeserializers;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,23 +42,23 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
     }
 
     @Override
-    public List<String> top250() throws OtherResponseException {
+    public List<String> top250() {
         return getRankedList("/chart/top/");
     }
 
     @Override
-    public List<String> top250TV() throws OtherResponseException {
+    public List<String> top250TV() {
         return getRankedList("/chart/toptv/");
     }
 
     @Override
-    public List<String> mostPopular() throws OtherResponseException {
+    public List<String> mostPopular() {
         return getRankedList("/chart/moviemeter/");
     }
 
     @Nonnull
     @Override
-    public ImdbCreativeWork findTitleById(@Nonnull String titleId) throws NotFoundException, OtherResponseException {
+    public ImdbCreativeWork findTitleById(@Nonnull String titleId) throws NotFoundException {
         return getObject(ImdbCreativeWork.class, Lazy.TITLE_ID_REGEX, "title", titleId, (title, document) -> {
             Element details = document.selectFirst("[data-testid=title-details-section]");
             if (title.getCountriesOfOrigin() == null) {
@@ -72,9 +69,13 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
             }
 
             if (title instanceof ImdbEpisode) {
-                String href = document.selectFirst("[data-testid=hero-subnav-bar-all-episodes-button]").attr(CssSelectors.ATTR_HREF);
-                ((ImdbEpisode)title).setSeriesTitleId((RegExUtilsExt.findOrElseThrow(Lazy.TITLE_ID_REGEX, href)).group());
-                String[] parts = document.selectFirst("[data-testid=hero-subnav-bar-season-episode-numbers-section-xs]").text().split("\\.");
+                String href = document.selectFirst("[data-testid=hero-subnav-bar-all-episodes-button]")
+                    .attr(CssSelectors.ATTR_HREF);
+                ((ImdbEpisode)title)
+                    .setSeriesTitleId((RegExUtilsExt.findOrElseThrow(Lazy.TITLE_ID_REGEX, href)).group());
+                String[] parts =
+                    document.selectFirst("[data-testid=hero-subnav-bar-season-episode-numbers-section-xs]").text()
+                        .split("\\.");
                 int season = Integer.parseInt(parts[0].substring(1));
                 int episode = Integer.parseInt(parts[1].substring(1));
                 ((ImdbEpisode)title).setEpisodeNumber(new EpisodeNumber(season, episode));
@@ -85,14 +86,15 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
     }
 
     @Override
-    public ReleaseInfo findReleaseInfo(String titleId) throws NotFoundException, OtherResponseException {
+    public ReleaseInfo findReleaseInfo(String titleId) throws NotFoundException {
         RegExUtilsExt.matchesOrElseThrow(Lazy.TITLE_ID_REGEX, titleId);
         Document document = getDocument(httpGet("/title/%s/releaseinfo", titleId));
         String enTitle = document.selectFirst("[itemprop=name]").selectFirst(CssSelectors.TAG_A).text();
         Elements releases = document.selectFirst("#releases").nextElementSibling().select(CssSelectors.TAG_TR);
         List<ReleaseDate> releaseDates = new ArrayList<>(releases.size());
         for (Element release : releases) {
-            Region country = parseCountry(URIUtil.getQueryValue(release.child(0).child(0).attr(CssSelectors.ATTR_HREF), "region"));
+            Region country =
+                parseCountry(URIUtil.getQueryValue(release.child(0).child(0).attr(CssSelectors.ATTR_HREF), "region"));
             String attribute = release.child(2).hasText() ? StringUtils.strip(release.child(2).text(), "()") : null;
             releaseDates.add(ReleaseDate.parse(country, release.child(1).text(), Lazy.DTF_RELEASE, attribute));
         }
@@ -102,9 +104,10 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
     }
 
     @Override
-    public String[] findEpisodesOfSeries(String seriesTitleId, int season) throws NotFoundException, OtherResponseException {
+    public String[] findEpisodesOfSeries(String seriesTitleId, int season) throws NotFoundException {
         RegExUtilsExt.matchesOrElseThrow(Lazy.TITLE_ID_REGEX, seriesTitleId);
-        Document document = getDocument(httpGet("/title/%s/episodes", seriesTitleId).addParameter("season", String.valueOf(season)));
+        Document document =
+            getDocument(httpGet("/title/%s/episodes", seriesTitleId).addParameter("season", String.valueOf(season)));
         String title = document.title();
         if (title.endsWith(Lazy.EPISODES_PAGE_TITLE_SUFFIX)) {
             throw new UnexpectedContentException(title);
@@ -119,12 +122,15 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
         Map<Integer, String> index2Id = new HashMap<>(episodesCount);
         for (int i = divs.size() - 1; i >= 0; i--) {
             Element div = divs.get(i);
-            String href = div.selectFirst(CssSelectors.TAG_STRONG).selectFirst(CssSelectors.TAG_A).attr(CssSelectors.ATTR_HREF).split("\\?")[0];
+            String href =
+                div.selectFirst(CssSelectors.TAG_STRONG).selectFirst(CssSelectors.TAG_A).attr(CssSelectors.ATTR_HREF)
+                    .split("\\?")[0];
             String id = RegExUtilsExt.matchesOrElseThrow(Lazy.TITLE_HREF_REGEX, href).group("id");
             String number = div.selectFirst("meta[itemprop=episodeNumber]").attr(CssSelectors.ATTR_CONTENT);
             int episode = Integer.parseInt(number);
             if (null != index2Id.put(episode, id)) {
-                throw new UnexpectedContentException(String.format("Conflict episodes of season %d of series %s", season, seriesTitleId));
+                throw new UnexpectedContentException(
+                    String.format("Conflict episodes of season %d of series %s", season, seriesTitleId));
             }
         }
         if (index2Id.isEmpty()) {
@@ -137,11 +143,11 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
 
     @Nonnull
     @Override
-    public ImdbPerson findPersonById(@Nonnull String nameId) throws NotFoundException, OtherResponseException {
+    public ImdbPerson findPersonById(@Nonnull String nameId) throws NotFoundException {
         return getObject(ImdbPerson.class, Lazy.PERSON_ID_REGEX, "name", nameId, (person, doc) -> person);
     }
 
-    private List<String> getRankedList(String path) throws OtherResponseException {
+    private List<String> getRankedList(String path) {
         Document document = findDocument(httpGet(path));
         Elements as = document.select("td.titleColumn").select(CssSelectors.TAG_A);
         List<String> ids = new ArrayList<>(as.size());
@@ -183,20 +189,19 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
         throw new IllegalArgumentException("No language constant: " + value);
     }
 
-    private <E extends Enum<E>> List<E> getDetails(Element section, String testId, String query, Function<String, E> parse) {
+    private <E extends Enum<E>> List<E> getDetails(Element section, String testId, String query,
+        Function<String, E> parse) {
         Element div = section.selectFirst("[data-testid=title-details-" + testId + "]");
         if (div == null) {
             return null;
         }
-        if (div.childNodeSize() > 2) {
-            throw new UnexpectedContentException("Access to the page for further details: " + div.child(2).attr(CssSelectors.ATTR_HREF));
-        }
-        Stream<String> stream = div.child(1).select(CssSelectors.TAG_A).stream().map(a -> a.attr(CssSelectors.ATTR_HREF));
+        Stream<String> stream =
+            div.child(1).select(CssSelectors.TAG_A).stream().map(a -> a.attr(CssSelectors.ATTR_HREF));
         return stream.map(href -> URIUtil.getQueryValue(href, query)).map(parse).collect(Collectors.toList());
     }
 
     private <T> T getObject(Class<T> clazz, Pattern p, String type, String id, BiFunction<T, Document, T> decorator)
-        throws NotFoundException, OtherResponseException {
+        throws NotFoundException {
         RegExUtilsExt.matchesOrElseThrow(p, id);
         Document document = getDocument(httpGet("/%s/%s/", type, id));
         try {
@@ -209,22 +214,16 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
 
     private static final class Lazy {
 
-        private static final ObjectMapper MAPPER = new ObjectMapper().setLocale(Locale.ENGLISH).enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-            .registerModule(new SimpleModule().addDeserializer(MovieGenre.class, EnumDeserializers.ofStringKey(MovieGenre.class, MovieGenre::getEnTitle)))
-            .registerModule(new SimpleModule().addDeserializer(Language.class, new AbstractStringDeserializer<>(Language.class) {
-                @Override
-                protected Language valueOfString(JsonParser p, Class<Language> clazz, String text) throws JsonParseException {
-                    Language[] enums = clazz.getEnumConstants();
-                    for (Language e : enums) {
-                        if (ArrayUtils.contains(e.getEnNames(), text)) {
-                            return e;
-                        }
-                    }
-                    throw new JsonParseException(p, String.format("Can't deserialize '%s' to a language", text));
-                }
-            })).registerModule(new JavaTimeModule());
+        private static final ObjectMapper MAPPER =
+            new ObjectMapper().setLocale(Locale.ENGLISH).enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+                .registerModule(new SimpleModule().addDeserializer(MovieGenre.class,
+                    EnumDeserializers.match(MovieGenre.class, (s, e) -> Objects.equals(s, e.getEnTitle()))))
+                .registerModule(new SimpleModule().addDeserializer(Language.class,
+                    EnumDeserializers.match(Language.class, (s, e) -> ArrayUtils.contains(e.getEnNames(), s))))
+                .registerModule(new JavaTimeModule());
 
-        private static final DateTimeFormatter DTF_RELEASE = DateTimeFormatter.ofPattern("[[d ]MMMM ]yyyy").withLocale(Locale.ENGLISH);
+        private static final DateTimeFormatter DTF_RELEASE =
+            DateTimeFormatter.ofPattern("[[d ]MMMM ]yyyy").withLocale(Locale.ENGLISH);
 
         private static final String TEXT_REGEX_STR = "[ \"!#%&'()*+,-./0-9:>?A-Za-z·\u0080-ÿ]+";
         private static final String EPISODES_PAGE_TITLE_SUFFIX = "- Episodes - IMDb";
@@ -232,6 +231,7 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
         private static final Pattern TITLE_ID_REGEX = Pattern.compile("tt\\d{7,8}");
         private static final Pattern PERSON_ID_REGEX = Pattern.compile("nm\\d{7}");
         private static final Pattern TITLE_HREF_REGEX = Pattern.compile("/title/(?<id>tt\\d{7,8})/");
-        private static final Pattern EPISODES_BY_SEASON_TITLE_REGEX = Pattern.compile("(?<t>" + TEXT_REGEX_STR + ") - Season (?<s>\\d{1,2}) - IMDb");
+        private static final Pattern EPISODES_BY_SEASON_TITLE_REGEX =
+            Pattern.compile("(?<t>" + TEXT_REGEX_STR + ") - Season (?<s>\\d{1,2}) - IMDb");
     }
 }

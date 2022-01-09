@@ -1,13 +1,16 @@
 package cn.wsg.commons.internet.com.douban;
 
 import cn.wsg.commons.internet.util.EnumMapping;
+import cn.wsg.commons.lang.EnumUtilExt;
 import cn.wsg.commons.lang.Region;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.Objects;
 
 /**
  * @author Kingen
  */
-enum RegionAlias implements EnumMapping<Region> {
+public enum RegionMapping implements EnumMapping<Region> {
 
     CN(Region.CN, "中国大陆"),
     HK(Region.HK, "中国香港"),
@@ -19,9 +22,17 @@ enum RegionAlias implements EnumMapping<Region> {
     private final Region region;
     private final String[] alias;
 
-    RegionAlias(Region region, String... alias) {
+    RegionMapping(Region region, String... alias) {
         this.region = region;
         this.alias = alias;
+    }
+
+    public static Region of(String value) {
+        try {
+            return EnumUtilExt.valueOf(Region.class, value, (k, e) -> Objects.equals(k, e.getZhShortName()));
+        } catch (IllegalArgumentException ex) {
+            return EnumUtilExt.valueOf(RegionMapping.class, value, (k, e) -> e.match(k)).getEnum();
+        }
     }
 
     @Override
@@ -30,7 +41,7 @@ enum RegionAlias implements EnumMapping<Region> {
     }
 
     @Override
-    public boolean contains(String value) {
+    public boolean match(String value) {
         return ArrayUtils.contains(alias, value);
     }
 }

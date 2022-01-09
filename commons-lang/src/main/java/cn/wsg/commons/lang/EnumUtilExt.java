@@ -2,10 +2,9 @@ package cn.wsg.commons.lang;
 
 import cn.wsg.commons.lang.function.CodeSupplier;
 import cn.wsg.commons.lang.function.IntCodeSupplier;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.BiPredicate;
 
 /**
  * Utility for Java enums.
@@ -19,13 +18,13 @@ public final class EnumUtilExt {
     }
 
     /**
-     * Returns the enum constant of the specified enum type with the specified key.
+     * Returns the enum constant of the specified enum type that matches the predicate.
      *
-     * @param keyMapper function to generate a <strong>unique</strong> key for each enum
+     * @param predicate function to test whether the key matches one enum constant of the enum type
      */
-    public static <K, E extends Enum<E>> E valueOfKey(Class<E> clazz, K key, Function<E, K> keyMapper) {
+    public static <K, E extends Enum<E>> E valueOf(Class<E> clazz, K key, BiPredicate<K, E> predicate) {
         for (E e : clazz.getEnumConstants()) {
-            if (Objects.equals(keyMapper.apply(e), key)) {
+            if (predicate.test(key, e)) {
                 return e;
             }
         }
@@ -33,39 +32,24 @@ public final class EnumUtilExt {
     }
 
     /**
-     * Returns the enum constant of the specified enum type with the specified ignore-case name.
-     * This method is a special case of {@link #valueOfKey(Class, Object, Function)}.
-     *
-     * @see #valueOfKey(Class, Object, Function)
-     */
-    public static <E extends Enum<E>> E valueOfIgnoreCase(Class<E> clazz, String target) {
-        for (E e : clazz.getEnumConstants()) {
-            if (StringUtils.equalsIgnoreCase(e.name(), target)) {
-                return e;
-            }
-        }
-        throw new IllegalArgumentException(String.format("Unknown name '%s' for '%s'", target, clazz));
-    }
-
-    /**
      * Returns the enum constant of the specified enum type with the specified code. This method is
-     * a special case of {@link #valueOfKey(Class, Object, Function)}.
+     * a special case of {@link #valueOf(Class, Object, BiPredicate)}
      *
-     * @see #valueOfKey(Class, Object, Function)
+     * @see #valueOf(Class, Object, BiPredicate)
      * @see CodeSupplier
      */
     public static <E extends Enum<E> & CodeSupplier> E valueOfCode(Class<E> clazz, String code) {
-        return valueOfKey(clazz, code, CodeSupplier::getCode);
+        return valueOf(clazz, code, (s, e) -> Objects.equals(s, e.getCode()));
     }
 
     /**
      * Returns the enum constant of the specified enum type with the specified code. This method is
-     * a special case of {@link #valueOfKey(Class, Object, Function)}.
+     * a special case of {@link #valueOf(Class, Object, BiPredicate)}.
      *
-     * @see #valueOfKey(Class, Object, Function)
+     * @see #valueOf(Class, Object, BiPredicate)
      * @see IntCodeSupplier
      */
     public static <E extends Enum<E> & IntCodeSupplier> E valueOfIntCode(Class<E> clazz, int code) {
-        return valueOfKey(clazz, code, IntCodeSupplier::getIntCode);
+        return valueOf(clazz, code, (c, e) -> c == e.getIntCode());
     }
 }

@@ -1,7 +1,6 @@
 package cn.wsg.commons.internet.repository;
 
 import cn.wsg.commons.internet.support.NotFoundException;
-import cn.wsg.commons.internet.support.OtherResponseException;
 
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
@@ -32,10 +31,9 @@ public interface ListRepoIterator<ID, T> extends RepoIterator<T> {
      * @return the next entity
      * @throws NoSuchElementException if the repository has no next entity
      * @throws NotFoundException      if the next entity is not found
-     * @throws OtherResponseException if an unexpected error occurs when requesting
      */
     @Override
-    T next() throws NotFoundException, OtherResponseException;
+    T next() throws NotFoundException;
 
     /**
      * Returns the index of the identifier that would be returned by a subsequent call to {@link
@@ -63,9 +61,8 @@ public interface ListRepoIterator<ID, T> extends RepoIterator<T> {
      * @return the previous entity
      * @throws NoSuchElementException if the repository has no previous entity
      * @throws NotFoundException      if the previous entity is not found
-     * @throws OtherResponseException if an unexpected error occurs when requesting
      */
-    T previous() throws NotFoundException, OtherResponseException;
+    T previous() throws NotFoundException;
 
     /**
      * Returns the index of the identifier that would be returned by a subsequent call to {@link

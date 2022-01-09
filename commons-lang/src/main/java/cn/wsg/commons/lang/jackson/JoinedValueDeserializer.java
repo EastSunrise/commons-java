@@ -1,18 +1,12 @@
 package cn.wsg.commons.lang.jackson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
+import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Deserialize a joined string into a list of objects.
@@ -20,45 +14,41 @@ import org.apache.commons.lang3.StringUtils;
  * @author Kingen
  * @see JsonJoinedValue
  */
-public class JoinedValueDeserializer extends JsonDeserializer<Object>
-    implements ContextualDeserializer {
+public class JoinedValueDeserializer extends FromStringDeserializer<List<?>> implements ContextualDeserializer {
 
     static final String DEFAULT_SEPARATOR = ",";
 
-    private String separator = DEFAULT_SEPARATOR;
-    private JavaType targetType;
+    private final String separator;
+    private final JavaType targetType;
 
     protected JoinedValueDeserializer() {
+        this(DEFAULT_SEPARATOR, null);
     }
 
-    @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt)
-        throws IOException {
-        if (targetType.isCollectionLikeType() && p.hasToken(JsonToken.VALUE_STRING)) {
-            String text = p.getText();
-            if (StringUtils.isBlank(text)
-                && ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)) {
-                return null;
-            }
-            String[] values = StringUtils.splitByWholeSeparator(text, separator);
-            ObjectMapper mapper = (ObjectMapper) p.getCodec();
-            Collection<Object> collection = new ArrayList<>(values.length);
-            for (String value : values) {
-                collection.add(mapper.convertValue(value.strip(), targetType.getContentType()));
-            }
-            return collection;
-        }
-        return ctxt.handleUnexpectedToken(targetType, p);
+    protected JoinedValueDeserializer(String separator, JavaType targetType) {
+        super(List.class);
+        this.separator = separator;
+        this.targetType = targetType;
     }
 
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty bp) {
         JsonJoinedValue joinedValue = bp.getAnnotation(JsonJoinedValue.class);
-        JoinedValueDeserializer deserializer = new JoinedValueDeserializer();
         if (null != joinedValue) {
-            deserializer.separator = joinedValue.separator();
+            return new JoinedValueDeserializer(joinedValue.separator(), bp.getType());
+        } else {
+            return new JoinedValueDeserializer(DEFAULT_SEPARATOR, bp.getType());
         }
-        deserializer.targetType = bp.getType();
-        return deserializer;
+    }
+
+    @Override
+    protected List<?> _deserialize(String text, DeserializationContext ctxt) {
+        String[] values = StringUtils.splitByWholeSeparator(text, separator);
+        ObjectMapper mapper = (ObjectMapper)ctxt.getParser().getCodec();
+        List<?> collection = new ArrayList<>(values.length);
+        for (String value : values) {
+            collection.add(mapper.convertValue(value.strip(), targetType.getContentType()));
+        }
+        return collection;
     }
 }

@@ -1,7 +1,6 @@
 package cn.wsg.commons.internet.repository;
 
 import cn.wsg.commons.internet.support.NotFoundException;
-import cn.wsg.commons.internet.support.OtherResponseException;
 
 /**
  * A repository whose entities are singly-linked.
@@ -29,10 +28,9 @@ public interface LinkedRepository<ID, T> extends Repository<ID, T>, RepoRetrieva
      * Retrieves the first entity in the repository or {@code null} if this repository is empty.
      *
      * @return the first entity, or {@code null} if this repository is empty
-     * @throws NotFoundException      if the first entity is not found
-     * @throws OtherResponseException if an unexpected error occurs when requesting
+     * @throws NotFoundException if the first entity is not found
      */
-    default T first() throws NotFoundException, OtherResponseException {
+    default T first() throws NotFoundException {
         ID id = firstIdentifier();
         return id == null ? null : findById(id);
     }

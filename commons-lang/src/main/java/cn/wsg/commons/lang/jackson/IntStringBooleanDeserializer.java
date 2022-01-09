@@ -1,18 +1,14 @@
 package cn.wsg.commons.lang.jackson;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
-
-import java.io.IOException;
+import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 
 /**
  * Deserializes '0'/'1' to {@link Boolean}.
  *
  * @author Kingen
  */
-public class IntStringBooleanDeserializer extends AbstractStringDeserializer<Boolean> {
+public class IntStringBooleanDeserializer extends FromStringDeserializer<Boolean> {
 
     private static final String FALSE = "0";
     private static final String TRUE = "1";
@@ -22,29 +18,13 @@ public class IntStringBooleanDeserializer extends AbstractStringDeserializer<Boo
     }
 
     @Override
-    public Boolean deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        JsonToken t = p.getCurrentToken();
-        if (t == JsonToken.VALUE_STRING) {
-            String text = p.getText().trim();
-            if (FALSE.equals(text)) {
-                return false;
-            }
-            if (TRUE.equals(text)) {
-                return true;
-            }
-        }
-        return (Boolean)ctxt.handleUnexpectedToken(getValueType(), p);
-    }
-
-    @Override
-    protected Boolean valueOfString(JsonParser p, Class<Boolean> clazz, String text) throws JsonParseException {
-        text = text.trim();
-        if (FALSE.equals(text)) {
+    protected Boolean _deserialize(String value, DeserializationContext ctxt) {
+        if (FALSE.equals(value)) {
             return false;
         }
-        if (TRUE.equals(text)) {
+        if (TRUE.equals(value)) {
             return true;
         }
-        throw new JsonParseException(p, String.format("Can't parse %s to a bool.", text));
+        throw new IllegalArgumentException(String.format("Can't parse %s to a bool.", value));
     }
 }

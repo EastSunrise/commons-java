@@ -146,7 +146,7 @@
         <commons-io.version>2.11.0</commons-io.version>
         <commons-text.version>1.9</commons-text.version>
         <httpclient.version>4.5.13</httpclient.version>
-        <jackson-bom.version>2.12.5</jackson-bom.version>
+        <jackson-bom.version>2.12.6</jackson-bom.version>
         <jsoup.version>1.11.3</jsoup.version>
         <guava.version>31.0.1-jre</guava.version>
         <junit.version>5.7.2</junit.version>

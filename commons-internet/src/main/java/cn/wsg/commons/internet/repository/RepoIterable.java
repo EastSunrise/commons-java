@@ -1,7 +1,6 @@
 package cn.wsg.commons.internet.repository;
 
 import cn.wsg.commons.internet.support.NotFoundException;
-import cn.wsg.commons.internet.support.OtherResponseException;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -26,11 +25,10 @@ public interface RepoIterable<T> {
      * processed or the action throws an unexpected exception.
      *
      * @param action the action to be performed for each entity
-     * @throws NotFoundException      if any entity is not found
-     * @throws OtherResponseException if an unexpected error occurs when requesting
-     * @throws NullPointerException   if any of the specified actions is null
+     * @throws NotFoundException    if any entity is not found
+     * @throws NullPointerException if any of the specified actions is null
      */
-    default void forEach(Consumer<? super T> action) throws NotFoundException, OtherResponseException {
+    default void forEach(Consumer<? super T> action) throws NotFoundException {
         Objects.requireNonNull(action);
         RepoIterator<T> iterator = repoIterator();
         while (iterator.hasNext()) {
@@ -44,22 +42,17 @@ public interface RepoIterable<T> {
      *
      * @param action         the action to be performed for each entity
      * @param notFoundAction the action to be performer if the entity is not found
-     * @param failAction     the action to be performed if an unexpected error occurs when
-     *                       requesting
      * @throws NullPointerException if any of the specified actions is null
      */
-    default void forEach(Consumer<? super T> action, Consumer<NotFoundException> notFoundAction, Consumer<OtherResponseException> failAction) {
+    default void forEach(Consumer<? super T> action, Consumer<NotFoundException> notFoundAction) {
         Objects.requireNonNull(action);
         Objects.requireNonNull(notFoundAction);
-        Objects.requireNonNull(failAction);
         RepoIterator<T> iterator = repoIterator();
         while (iterator.hasNext()) {
             try {
                 action.accept(iterator.next());
             } catch (NotFoundException e) {
                 notFoundAction.accept(e);
-            } catch (OtherResponseException e) {
-                failAction.accept(e);
             }
         }
     }

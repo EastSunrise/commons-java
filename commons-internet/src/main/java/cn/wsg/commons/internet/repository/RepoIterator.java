@@ -1,7 +1,6 @@
 package cn.wsg.commons.internet.repository;
 
 import cn.wsg.commons.internet.support.NotFoundException;
-import cn.wsg.commons.internet.support.OtherResponseException;
 
 import java.util.NoSuchElementException;
 
@@ -27,7 +26,6 @@ public interface RepoIterator<T> {
      * @return the next entity
      * @throws NoSuchElementException if the iteration has no next entity
      * @throws NotFoundException      if the next entity is not found
-     * @throws OtherResponseException if an unexpected error occurs when requesting
      */
-    T next() throws NotFoundException, OtherResponseException;
+    T next() throws NotFoundException;
 }

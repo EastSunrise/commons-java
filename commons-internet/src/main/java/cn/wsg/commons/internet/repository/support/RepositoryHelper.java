@@ -5,13 +5,9 @@ import cn.wsg.commons.internet.page.PageIndex;
 import cn.wsg.commons.internet.repository.RepoPageable;
 import cn.wsg.commons.internet.repository.RepoRetrievable;
 import cn.wsg.commons.internet.support.NotFoundException;
-import cn.wsg.commons.internet.support.OtherResponseException;
 import cn.wsg.commons.internet.view.SiblingSupplier;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -37,9 +33,8 @@ public final class RepositoryHelper {
      * @param <T>         type of entities
      * @return a linked list of entities
      */
-    public static <ID, T extends SiblingSupplier<ID>> List<T> collectSiblingEntities(
-        RepoRetrievable<ID, T> retrievable, ID first) throws NotFoundException,
-        OtherResponseException {
+    public static <ID, T extends SiblingSupplier<ID>> List<T> collectSiblingEntities(RepoRetrievable<ID, T> retrievable,
+        ID first) throws NotFoundException {
         List<T> entities = new LinkedList<>();
         find(first, retrievable, new HashSet<>(), entities);
         return entities;
@@ -54,13 +49,11 @@ public final class RepositoryHelper {
      * @param action   action to be performed for the content of each page
      * @param <T>      type of the content of each page
      * @param <P>      type of requests with pagination information
-     * @throws NotFoundException      if any page is not found
-     * @throws OtherResponseException if an unexpected error occurs when requesting
+     * @throws NotFoundException if any page is not found
      */
     @SuppressWarnings("unchecked")
-    public static <T, P extends PageIndex> void forEachPage(
-        RepoPageable<P, ? extends Page<T>> pageable, P firstReq, Consumer<List<T>> action)
-        throws NotFoundException, OtherResponseException {
+    public static <T, P extends PageIndex> void forEachPage(RepoPageable<P, ? extends Page<T>> pageable, P firstReq,
+        Consumer<List<T>> action) throws NotFoundException {
         P req = firstReq;
         while (true) {
             Page<T> result = pageable.findPage(req);
@@ -68,7 +61,7 @@ public final class RepositoryHelper {
             if (!result.hasNext()) {
                 break;
             }
-            req = (P) result.nextPageReq();
+            req = (P)result.nextPageReq();
         }
     }
 
@@ -83,13 +76,11 @@ public final class RepositoryHelper {
      * @param predicate predicate that ends the traversal
      * @param <T>       type of the content of each page
      * @param <P>       type of requests with pagination information
-     * @throws NotFoundException      if any page is not found
-     * @throws OtherResponseException if an unexpected error occurs when requesting
+     * @throws NotFoundException if any page is not found
      */
     @SuppressWarnings("unchecked")
-    public static <T, P extends PageIndex> void forEachPageUntil(
-        RepoPageable<P, ? extends Page<T>> pageable, P firstReq, Consumer<T> action,
-        Predicate<T> predicate) throws NotFoundException, OtherResponseException {
+    public static <T, P extends PageIndex> void forEachPageUntil(RepoPageable<P, ? extends Page<T>> pageable,
+        P firstReq, Consumer<T> action, Predicate<T> predicate) throws NotFoundException {
         P req = firstReq;
         boolean dead = false;
         while (true) {
@@ -104,7 +95,7 @@ public final class RepositoryHelper {
             if (dead || !page.hasNext()) {
                 break;
             }
-            req = (P) page.nextPageReq();
+            req = (P)page.nextPageReq();
         }
     }
 
@@ -117,20 +108,17 @@ public final class RepositoryHelper {
      * @param <T>      type of the content of each page
      * @param <P>      type of requests with pagination information
      * @return list of all indices found by pages
-     * @throws NotFoundException      if any page is not found
-     * @throws OtherResponseException if an unexpected error occurs when requesting
+     * @throws NotFoundException if any page is not found
      */
-    public static <T, P extends PageIndex> List<T> collectPage(
-        RepoPageable<P, ? extends Page<T>> pageable, P firstReq) throws NotFoundException,
-        OtherResponseException {
+    public static <T, P extends PageIndex> List<T> collectPage(RepoPageable<P, ? extends Page<T>> pageable, P firstReq)
+        throws NotFoundException {
         List<T> indices = new ArrayList<>();
         forEachPage(pageable, firstReq, indices::addAll);
         return indices;
     }
 
-    private static <ID, T extends SiblingSupplier<ID>> void find(ID id,
-        RepoRetrievable<ID, T> retrievable, Set<ID> ids, List<T> entities)
-        throws NotFoundException, OtherResponseException {
+    private static <ID, T extends SiblingSupplier<ID>> void find(ID id, RepoRetrievable<ID, T> retrievable, Set<ID> ids,
+        List<T> entities) throws NotFoundException {
         if (id == null) {
             return;
         }

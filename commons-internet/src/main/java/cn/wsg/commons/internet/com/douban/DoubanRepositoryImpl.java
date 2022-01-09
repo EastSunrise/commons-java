@@ -5,8 +5,9 @@ import cn.wsg.commons.internet.common.MovieGenre;
 import cn.wsg.commons.internet.page.Page;
 import cn.wsg.commons.internet.page.PageIndex;
 import cn.wsg.commons.internet.support.*;
-import cn.wsg.commons.internet.util.EnumMappingUtil;
-import cn.wsg.commons.lang.*;
+import cn.wsg.commons.lang.AssertUtils;
+import cn.wsg.commons.lang.EnumUtilExt;
+import cn.wsg.commons.lang.RegExUtilsExt;
 import cn.wsg.commons.lang.jackson.EnumDeserializers;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,7 +18,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.cookie.Cookie;
 import org.jsoup.Jsoup;
@@ -47,11 +47,11 @@ public class DoubanRepositoryImpl extends AbstractLoggableSite<Long> implements 
     }
 
     @Override
-    public void login(String username, String password) throws OtherResponseException, LoginException {
+    public void login(String username, String password) throws LoginException {
         this.logout();
-        RequestBuilder builder =
-            this.create("accounts", METHOD_POST, "/j/mobile/login/basic").addParameter("ck", "").addParameter("remember", String.valueOf(true))
-                .addParameter("name", username).addParameter("password", password);
+        RequestBuilder builder = this.create("accounts", METHOD_POST, "/j/mobile/login/basic").addParameter("ck", "")
+            .addParameter("remember", String.valueOf(true)).addParameter("name", username)
+            .addParameter("password", password);
         LoginResult result;
         try {
             result = this.getObject(builder, Lazy.MAPPER, LoginResult.class);
@@ -75,20 +75,22 @@ public class DoubanRepositoryImpl extends AbstractLoggableSite<Long> implements 
     }
 
     @Override
-    public void logout() throws OtherResponseException {
+    public void logout() {
         if (this.user() == null) {
             return;
         }
         this.findDocument(this.httpGet(""));
-        RequestBuilder builder =
-            this.httpGet("/accounts/logout").addParameter("source", "main").addParameter("ck", Objects.requireNonNull(this.getCookie("ck")).getValue());
+        RequestBuilder builder = this.httpGet("/accounts/logout").addParameter("source", "main")
+            .addParameter("ck", Objects.requireNonNull(this.getCookie("ck")).getValue());
         this.findDocument(builder);
     }
 
     @Override
-    public Page<SubjectIndex> searchGlobally(String keyword, PageIndex page, DoubanCatalog catalog) throws OtherResponseException {
+    public Page<SubjectIndex> searchGlobally(String keyword, PageIndex page, DoubanCatalog catalog)
+        throws SearchException {
         AssertUtils.requireNotBlank(keyword);
-        RequestBuilder builder = httpGet("/j/search").addParameter("q", keyword).addParameter("start", String.valueOf(page.getCurrent() * 20));
+        RequestBuilder builder = httpGet("/j/search").addParameter("q", keyword)
+            .addParameter("start", String.valueOf(page.getCurrent() * 20));
         if (catalog != null) {
             builder.addParameter("cat", String.valueOf(catalog.getIntCode()));
         }
@@ -99,7 +101,7 @@ public class DoubanRepositoryImpl extends AbstractLoggableSite<Long> implements 
             throw new UnexpectedException(e);
         }
         if (result.getMsg() != null) {
-            throw new OtherResponseException(HttpStatus.SC_INTERNAL_SERVER_ERROR, result.getMsg());
+            throw new SearchException(result.getMsg());
         }
         List<SubjectIndex> indices = new ArrayList<>(result.getItems().size());
         for (String item : result.getItems()) {
@@ -127,14 +129,17 @@ public class DoubanRepositoryImpl extends AbstractLoggableSite<Long> implements 
     }
 
     @Override
-    public Page<RankedSubject> top250(PageIndex pageIndex) throws OtherResponseException {
-        Document document = findDocument(request(DoubanCatalog.MOVIE, "/top250").addParameter("start", String.valueOf(pageIndex.getCurrent() * 25)));
+    public Page<RankedSubject> top250(PageIndex pageIndex) {
+        Document document = findDocument(
+            request(DoubanCatalog.MOVIE, "/top250").addParameter("start", String.valueOf(pageIndex.getCurrent() * 25)));
         Elements items = document.selectFirst(".article").select(".item");
         List<RankedSubject> subjects = new ArrayList<>(items.size());
         for (Element item : items) {
             Element pic = item.selectFirst(".pic");
             int rank = Integer.parseInt(pic.child(0).text());
-            String id = RegExUtilsExt.matchesOrElseThrow(Lazy.SUBJECT_URL_REGEX, pic.child(1).attr(CssSelectors.ATTR_HREF)).group("id");
+            String id =
+                RegExUtilsExt.matchesOrElseThrow(Lazy.SUBJECT_URL_REGEX, pic.child(1).attr(CssSelectors.ATTR_HREF))
+                    .group("id");
             String name = pic.selectFirst(CssSelectors.TAG_IMG).attr(CssSelectors.ATTR_ALT);
             subjects.add(new RankedSubject(Long.parseLong(id), DoubanCatalog.MOVIE, name, rank));
         }
@@ -143,7 +148,7 @@ public class DoubanRepositoryImpl extends AbstractLoggableSite<Long> implements 
 
     @Override
     public Page<MarkedSubject> findUserSubjects(DoubanCatalog catalog, long userId, MarkedStatus status, PageIndex page)
-        throws NotFoundException, OtherResponseException {
+        throws NotFoundException {
         RequestBuilder builder = request(catalog, "/people/%d/%s", userId, status.name().toLowerCase());
         builder.addParameter("start", String.valueOf(page.getCurrent() * 30));
         builder.addParameter("sort", "time");
@@ -166,7 +171,8 @@ public class DoubanRepositoryImpl extends AbstractLoggableSite<Long> implements 
     }
 
     @Override
-    public Page<PersonIndex> findUserCreators(DoubanCatalog catalog, long userId, PageIndex page) throws NotFoundException, OtherResponseException {
+    public Page<PersonIndex> findUserCreators(DoubanCatalog catalog, long userId, PageIndex page)
+        throws NotFoundException {
         RequestBuilder builder = request(catalog, "/people/%d/%s", userId, catalog.getPersonPlurality());
         builder.addParameter("start", String.valueOf(page.getCurrent() * 15));
         Document document = this.getDocument(builder);
@@ -186,7 +192,7 @@ public class DoubanRepositoryImpl extends AbstractLoggableSite<Long> implements 
     }
 
     @Override
-    public DoubanVideo findVideoById(long id) throws NotFoundException, OtherResponseException {
+    public DoubanVideo findVideoById(long id) throws NotFoundException {
         return this.getSubject(DoubanVideo.class, DoubanCatalog.MOVIE, id, (video, document) -> {
             String title = document.title();
             String zhTitle = title.substring(0, title.length() - 5);
@@ -205,15 +211,13 @@ public class DoubanRepositoryImpl extends AbstractLoggableSite<Long> implements 
             if (video.getCountriesOfOrigin() == null && null != roo) {
                 String[] values = StringUtils.split(((TextNode)roo.nextSibling()).text(), "/");
                 video.setCountriesOfOrigin(
-                    Arrays.stream(values).map(s -> EnumMappingUtil.valueOf(Region.class, Region::getZhShortName, RegionAlias.class, s.strip()))
-                        .collect(Collectors.toList()));
+                    Arrays.stream(values).map(s -> RegionMapping.of(s.strip())).collect(Collectors.toList()));
             }
             Element lang = metadata.get("语言:");
             if (video.getLanguages() == null && null != lang) {
                 String[] values = StringUtils.split(((TextNode)lang.nextSibling()).text(), "/");
                 video.setLanguages(
-                    Arrays.stream(values).map(s -> EnumMappingUtil.valueOf(Language.class, Language::getZhName, LanguageMapping.class, s.strip()))
-                        .collect(Collectors.toList()));
+                    Arrays.stream(values).map(s -> LanguageMapping.of(s.strip())).collect(Collectors.toList()));
             }
             Element imdb = metadata.get("IMDb:");
             if (null != imdb) {
@@ -241,19 +245,21 @@ public class DoubanRepositoryImpl extends AbstractLoggableSite<Long> implements 
     }
 
     @Override
-    public DoubanBook findBookById(long id) throws NotFoundException, OtherResponseException {
+    public DoubanBook findBookById(long id) throws NotFoundException {
         return this.getSubject(DoubanBook.class, DoubanCatalog.BOOK, id, (book, document) -> book);
     }
 
     @Override
-    public long getDbIdByImdbId(String imdbId) throws NotFoundException, OtherResponseException, LoginException {
+    public long getDbIdByImdbId(String imdbId) throws NotFoundException, LoginException {
         if (this.user() == null) {
             throw new LoginException("Please log in first.");
         }
         AssertUtils.requireNotBlank(imdbId);
-        RequestBuilder builder = this.create("movie", METHOD_POST, "/new_subject").addParameter("ck", Objects.requireNonNull(this.getCookie("ck")).getValue())
-            .addParameter("type", "0").addParameter("p_title", imdbId).addParameter("p_uid", imdbId)
-            .addParameter("cat", String.valueOf(DoubanCatalog.MOVIE.getIntCode())).addParameter("subject_submit", "下一步");
+        RequestBuilder builder = this.create("movie", METHOD_POST, "/new_subject")
+            .addParameter("ck", Objects.requireNonNull(this.getCookie("ck")).getValue()).addParameter("type", "0")
+            .addParameter("p_title", imdbId).addParameter("p_uid", imdbId)
+            .addParameter("cat", String.valueOf(DoubanCatalog.MOVIE.getIntCode()))
+            .addParameter("subject_submit", "下一步");
         Document document = this.findDocument(builder);
         Element fieldset = document.selectFirst("div#content").selectFirst(CssSelectors.TAG_FIELDSET);
         Element input = fieldset.selectFirst("input#p_uid");
@@ -276,7 +282,7 @@ public class DoubanRepositoryImpl extends AbstractLoggableSite<Long> implements 
     }
 
     private <T> T getSubject(Class<T> clazz, DoubanCatalog catalog, long id, BiFunction<T, Document, T> decorator)
-        throws NotFoundException, OtherResponseException {
+        throws NotFoundException {
         RequestBuilder builder = request(catalog, "/subject/%d/", id);
         Document document = this.getDocument(builder);
         String html = document.selectFirst("script[type=application/ld+json]").html();
@@ -297,24 +303,29 @@ public class DoubanRepositoryImpl extends AbstractLoggableSite<Long> implements 
 
     private static final class Lazy {
 
-        private static final ObjectMapper MAPPER = new ObjectMapper()
-            .registerModule(new SimpleModule().addDeserializer(MovieGenre.class, EnumDeserializers.ofStringKey(MovieGenre.class, MovieGenre::getZhTitle)))
+        private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(new SimpleModule()
+            .addDeserializer(MovieGenre.class,
+                EnumDeserializers.match(MovieGenre.class, (s, e) -> Objects.equals(s, e.getZhTitle()))))
             .registerModule(new JavaTimeModule());
 
         private static final Pattern COOKIE_DBCL2_REGEX = Pattern.compile("\"(?<id>\\d+):[0-9A-Za-z+/]+\"");
 
-        private static final Pattern SUBJECT_LINK_REGEX =
-            Pattern.compile("https://www\\.douban\\.com/link2/\\?url=(?<u>[\\w%.-]+)" + "&query=(?<q>[\\w%-]+)&cat_id=(?<c>\\d+)&type=search&pos=(?<p>\\d+)");
+        private static final Pattern SUBJECT_LINK_REGEX = Pattern.compile(
+            "https://www\\.douban\\.com/link2/\\?url=(?<u>[\\w%.-]+)"
+                + "&query=(?<q>[\\w%-]+)&cat_id=(?<c>\\d+)&type=search&pos=(?<p>\\d+)");
         private static final Pattern CREATORS_PAGE_TITLE_REGEX = Pattern.compile("[^()\\s]+\\((?<t>\\d+)\\)");
 
         private static final Pattern SUBJECT_URL_REGEX;
         private static final Pattern CREATOR_URL_REGEX;
 
         static {
-            String catalogs = Arrays.stream(DoubanCatalog.values()).map(DoubanCatalog::name).map(String::toLowerCase).collect(Collectors.joining("|"));
+            String catalogs = Arrays.stream(DoubanCatalog.values()).map(DoubanCatalog::name).map(String::toLowerCase)
+                .collect(Collectors.joining("|"));
             SUBJECT_URL_REGEX = Pattern.compile("https://(" + catalogs + ")\\.douban\\.com/subject/(?<id>\\d+)/");
-            String creators = Arrays.stream(DoubanCatalog.values()).map(DoubanCatalog::getPerson).collect(Collectors.joining("|"));
-            CREATOR_URL_REGEX = Pattern.compile("https://(" + catalogs + ")\\.douban\\.com/(" + creators + ")/(?<id>\\d+)/");
+            String creators =
+                Arrays.stream(DoubanCatalog.values()).map(DoubanCatalog::getPerson).collect(Collectors.joining("|"));
+            CREATOR_URL_REGEX =
+                Pattern.compile("https://(" + catalogs + ")\\.douban\\.com/(" + creators + ")/(?<id>\\d+)/");
         }
     }
 
