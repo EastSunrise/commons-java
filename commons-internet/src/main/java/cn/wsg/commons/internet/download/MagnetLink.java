@@ -41,14 +41,15 @@ public final class MagnetLink extends BaseDownloadLink {
         }
         url = url.replace(" ", "");
         url = StringEscapeUtils.unescapeHtml4(url);
-        if (!Lazy.MAGNET_REGEX.matcher(url).matches()) {
-            throw new InvalidLinkException(MagnetLink.class, url);
-        }
         Matcher xt = Lazy.XT_REGEX.matcher(url);
         Set<String> topics = new HashSet<>();
         while (xt.find()) {
             topics.add(xt.group("xt"));
         }
+        if (topics.isEmpty()) {
+            throw new InvalidLinkException(MagnetLink.class, url);
+        }
+
         Matcher dns = Lazy.DN_REGEX.matcher(url);
         Set<String> names = new HashSet<>();
         while (dns.find()) {
@@ -91,17 +92,12 @@ public final class MagnetLink extends BaseDownloadLink {
 
     private static class Lazy {
 
-        private static final String XT =
-            "urn:(btih|tree:tiger|sha1|ed2k|aich|kzhash|md5):([0-9A-Za-z]{40}|[0-9A-Za-z]{32})";
-        private static final String XL = "\\d+";
         private static final String EQ = "(\\d+|\\.\\d+|\\+\\d+)?=";
         private static final String VAR = "[^&]*(&(?!(xl|tr|dn|xt)" + EQ + ")[^&]*)*";
-        private static final Pattern XT_REGEX = Pattern.compile("(\\?1?xt1?|&xt)" + EQ + "(?<xt>" + XT + ")");
-        private static final Pattern DN_REGEX = Pattern.compile("[?&]dn" + EQ + "(?<dn>" + VAR + ")");
-        private static final Pattern TR_REGEX = Pattern.compile("[?&]tr" + EQ + "(?<tr>" + VAR + ")");
-        private static final Pattern XL_REGEX = Pattern.compile("[?&]xl" + EQ + "(?<xl>" + XL + ")");
-        private static final Pattern MAGNET_REGEX = Pattern.compile(
-            "magnet:\\?((tr|dn)" + EQ + VAR + "&|xl" + EQ + XL + "&)*" + "+1?xt1?" + EQ + XT + "\\W?(&(tr|dn)" + EQ
-                + VAR + "|&xl" + EQ + XL + ")*" + "(&t|&dn|&tr)?", Pattern.CASE_INSENSITIVE);
+        private static final Pattern XT_REGEX = Pattern.compile("(?<=[?&])xt" + EQ
+            + "(?<xt>urn:(btih|tree:tiger|sha1|ed2k|aich|kzhash|md5):([0-9A-Za-z]{40}|[0-9A-Za-z]{32})(?!\\w))");
+        private static final Pattern DN_REGEX = Pattern.compile("(?<=[?&])dn" + EQ + "(?<dn>" + VAR + ")");
+        private static final Pattern TR_REGEX = Pattern.compile("(?<=[?&])tr" + EQ + "(?<tr>" + VAR + ")");
+        private static final Pattern XL_REGEX = Pattern.compile("(?<=[?&])xl" + EQ + "(?<xl>\\d+)");
     }
 }
