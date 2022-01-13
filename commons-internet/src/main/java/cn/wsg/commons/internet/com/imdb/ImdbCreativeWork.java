@@ -1,7 +1,7 @@
 package cn.wsg.commons.internet.com.imdb;
 
-import cn.wsg.commons.internet.common.AggregateRating;
-import cn.wsg.commons.internet.common.MovieGenre;
+import cn.wsg.commons.internet.common.video.AggregateRating;
+import cn.wsg.commons.internet.common.video.MovieGenre;
 import cn.wsg.commons.internet.org.schema.item.CreativeWork;
 import cn.wsg.commons.lang.Language;
 import cn.wsg.commons.lang.Region;

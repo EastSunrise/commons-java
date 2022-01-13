@@ -1,7 +1,7 @@
 package cn.wsg.commons.internet.com.douban;
 
 import cn.wsg.commons.internet.AbstractLoggableSite;
-import cn.wsg.commons.internet.common.MovieGenre;
+import cn.wsg.commons.internet.common.video.MovieGenre;
 import cn.wsg.commons.internet.page.Page;
 import cn.wsg.commons.internet.page.PageIndex;
 import cn.wsg.commons.internet.support.*;

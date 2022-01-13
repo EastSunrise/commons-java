@@ -1,4 +1,4 @@
-package cn.wsg.commons.internet.common;
+package cn.wsg.commons.internet.common.video;
 
 /**
  * @author Kingen

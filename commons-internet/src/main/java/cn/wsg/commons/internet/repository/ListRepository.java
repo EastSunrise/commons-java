@@ -138,7 +138,7 @@ public interface ListRepository<ID, T> extends Repository<ID, T>, RepoRetrievabl
      * Retrieves the list of all entities contained in this repository.
      *
      * @return the list of all entities
-     * @throws NotFoundException if amy entity is not found
+     * @throws NotFoundException if any entity is not found
      */
     List<T> entities() throws NotFoundException;
 }

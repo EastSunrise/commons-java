@@ -1,6 +1,6 @@
 package cn.wsg.commons.internet.com.imdb;
 
-import cn.wsg.commons.internet.common.ReleaseInfo;
+import cn.wsg.commons.internet.common.video.ReleaseInfo;
 import cn.wsg.commons.internet.support.NotFoundException;
 
 import java.util.List;

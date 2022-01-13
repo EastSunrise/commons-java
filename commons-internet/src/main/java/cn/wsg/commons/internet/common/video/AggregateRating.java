@@ -1,4 +1,4 @@
-package cn.wsg.commons.internet.common;
+package cn.wsg.commons.internet.common.video;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -11,17 +11,11 @@ import lombok.NoArgsConstructor;
  * @author Kingen
  */
 @Getter
-@JsonTypeName("Rating")
+@JsonTypeName("AggregateRating")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class Rating implements cn.wsg.commons.internet.org.schema.item.Rating {
+public class AggregateRating extends Rating implements cn.wsg.commons.internet.org.schema.item.AggregateRating {
 
-    @JsonProperty("bestRating")
-    private Double bestRating;
-
-    @JsonProperty("worstRating")
-    private Double worstRating;
-
-    @JsonProperty("ratingValue")
-    private Double ratingValue;
+    @JsonProperty("ratingCount")
+    private Integer ratingCount;
 }

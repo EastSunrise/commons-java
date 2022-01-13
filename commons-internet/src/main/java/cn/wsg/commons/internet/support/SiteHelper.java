@@ -11,7 +11,6 @@ import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.cache.CachingHttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import java.io.IOException;
@@ -24,11 +23,10 @@ import java.io.IOException;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SiteHelper {
 
-    public static final int MIN_ERROR_STATUS_CODE = 300;
     public static final int DEFAULT_TIME_OUT = 30000;
 
     public static CloseableHttpClient defaultClient() {
-        return CachingHttpClientBuilder.create().setHttpCacheStorage(new FileHttpCacheStorage())
+        return RootHttpClientBuilder.create().setHttpCacheStorage(new FileHttpCacheStorage())
             .setConnectionManager(new PoolingHttpClientConnectionManager()).build();
     }
 
@@ -53,6 +51,30 @@ public final class SiteHelper {
                 throw new SiteStatusException(annotation);
             }
         }
+    }
+
+    public static boolean isResponseMessage(int statusCode) {
+        return statusCode >= 100 && statusCode < 200;
+    }
+
+    public static boolean isResponseSuccess(int statusCode) {
+        return statusCode >= 200 && statusCode < 300;
+    }
+
+    public static boolean isResponseRedirect(int statusCode) {
+        return statusCode >= 300 && statusCode < 400;
+    }
+
+    public static boolean isResponseError(int statusCode) {
+        return isResponseClientError(statusCode) || isResponseServerError(statusCode);
+    }
+
+    public static boolean isResponseClientError(int statusCode) {
+        return statusCode >= 400 && statusCode < 500;
+    }
+
+    public static boolean isResponseServerError(int statusCode) {
+        return statusCode >= 500 && statusCode < 600;
     }
 
     /**

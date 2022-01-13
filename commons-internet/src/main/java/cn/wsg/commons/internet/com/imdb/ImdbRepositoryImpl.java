@@ -1,9 +1,9 @@
 package cn.wsg.commons.internet.com.imdb;
 
 import cn.wsg.commons.internet.BaseSite;
-import cn.wsg.commons.internet.common.MovieGenre;
-import cn.wsg.commons.internet.common.ReleaseDate;
-import cn.wsg.commons.internet.common.ReleaseInfo;
+import cn.wsg.commons.internet.common.video.MovieGenre;
+import cn.wsg.commons.internet.common.video.ReleaseDate;
+import cn.wsg.commons.internet.common.video.ReleaseInfo;
 import cn.wsg.commons.internet.support.*;
 import cn.wsg.commons.internet.util.URIUtil;
 import cn.wsg.commons.lang.Language;

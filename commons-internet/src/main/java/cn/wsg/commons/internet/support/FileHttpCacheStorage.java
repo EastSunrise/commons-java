@@ -2,15 +2,16 @@ package cn.wsg.commons.internet.support;
 
 import cn.wsg.commons.lang.StringUtilsExt;
 import cn.wsg.commons.lang.SystemConsts;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.client.cache.HttpCacheEntry;
 import org.apache.http.client.cache.HttpCacheStorage;
 import org.apache.http.client.cache.HttpCacheUpdateCallback;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * Stores caches in the file system.
@@ -23,7 +24,7 @@ public class FileHttpCacheStorage implements HttpCacheStorage {
     @Override
     public void putEntry(String key, HttpCacheEntry entry) throws IOException {
         // todo variant entry
-        if (entry.getStatusCode() >= SiteHelper.MIN_ERROR_STATUS_CODE) {
+        if (SiteHelper.isResponseError(entry.getStatusCode())) {
             log.warn("Can't write an error entry.");
             return;
         }
@@ -42,7 +43,7 @@ public class FileHttpCacheStorage implements HttpCacheStorage {
         }
         log.info("Reading an entry: {}", key);
         try (ObjectInputStream ois = new ObjectInputStream(FileUtils.openInputStream(file))) {
-            return (HttpCacheEntry) ois.readObject();
+            return (HttpCacheEntry)ois.readObject();
         } catch (ClassNotFoundException e) {
             throw new IOException(e);
         }
@@ -60,13 +61,12 @@ public class FileHttpCacheStorage implements HttpCacheStorage {
     }
 
     @Override
-    public void updateEntry(String key, HttpCacheUpdateCallback callback)
-        throws IOException {
+    public void updateEntry(String key, HttpCacheUpdateCallback callback) throws IOException {
         log.info("Updating an entry: {}", key);
         File file = getFile(key);
         try (ObjectInputStream ois = new ObjectInputStream(FileUtils.openInputStream(file));
             ObjectOutputStream oos = new ObjectOutputStream(FileUtils.openOutputStream(file))) {
-            oos.writeObject(callback.update((HttpCacheEntry) ois.readObject()));
+            oos.writeObject(callback.update((HttpCacheEntry)ois.readObject()));
         } catch (ClassNotFoundException e) {
             throw new IOException(e);
         }
