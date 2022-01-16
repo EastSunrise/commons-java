@@ -19,6 +19,7 @@ public final class DatetimeConsts {
      */
     public static final DateTimeFormatter DTF_YYYY_MM_DD_HH_MM = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     public static final String PAT_YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+    public static final String PAT_ISO_LOCAL_DATE = "yyyy-MM-dd";
     public static final DateTimeFormatter DTF_YYYY_MM_DD_HH_MM_SS =
         DateTimeFormatter.ofPattern(PAT_YYYY_MM_DD_HH_MM_SS);
 }

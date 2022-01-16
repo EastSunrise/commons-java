@@ -2,8 +2,10 @@ package cn.wsg.commons.internet.com.imdb;
 
 import cn.wsg.commons.internet.common.video.ReleaseInfo;
 import cn.wsg.commons.internet.support.NotFoundException;
+import cn.wsg.commons.lang.RegExUtilsExt;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author Kingen
@@ -11,6 +13,34 @@ import java.util.List;
  * @see <a href="https://developer.imdb.com/documentation">Documentation & Data Dictionary</a>
  */
 public interface ImdbRepository {
+
+    Pattern TITLE_ID_REGEX = Pattern.compile("tt\\d{7,8}");
+
+    Pattern NAME_ID_REGEX = Pattern.compile("nm\\d{7}");
+
+    /**
+     * Checks whether the specified value is a valid IMDb ID of a creative work.
+     *
+     * @param titleId the ID to be checked
+     * @return the ID if valid
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    static String checkTitleId(String titleId) {
+        RegExUtilsExt.matchesOrElseThrow(TITLE_ID_REGEX, titleId);
+        return titleId;
+    }
+
+    /**
+     * Checks whether the specified value is a valid IMDb ID of a person.
+     *
+     * @param nameId the ID to be checked
+     * @return the ID if valid
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    static String checkNameId(String nameId) {
+        RegExUtilsExt.matchesOrElseThrow(NAME_ID_REGEX, nameId);
+        return nameId;
+    }
 
     /**
      * Retrieves the top 250 movies.

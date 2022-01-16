@@ -18,6 +18,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
+import org.apache.http.client.methods.RequestBuilder;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -59,7 +60,8 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
     @Nonnull
     @Override
     public ImdbCreativeWork findTitleById(@Nonnull String titleId) throws NotFoundException {
-        return getObject(ImdbCreativeWork.class, Lazy.TITLE_ID_REGEX, "title", titleId, (title, document) -> {
+        ImdbRepository.checkTitleId(titleId);
+        return getObject(ImdbCreativeWork.class, "title", titleId, (title, document) -> {
             Element details = document.selectFirst("[data-testid=title-details-section]");
             if (title.getCountriesOfOrigin() == null) {
                 title.setCountriesOfOrigin(getDetails(details, "origin", "country_of_origin", this::parseCountry));
@@ -71,8 +73,7 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
             if (title instanceof ImdbEpisode) {
                 String href = document.selectFirst("[data-testid=hero-subnav-bar-all-episodes-button]")
                     .attr(CssSelectors.ATTR_HREF);
-                ((ImdbEpisode)title)
-                    .setSeriesTitleId((RegExUtilsExt.findOrElseThrow(Lazy.TITLE_ID_REGEX, href)).group());
+                ((ImdbEpisode)title).setSeriesTitleId((RegExUtilsExt.findOrElseThrow(TITLE_ID_REGEX, href)).group());
                 String[] parts =
                     document.selectFirst("[data-testid=hero-subnav-bar-season-episode-numbers-section-xs]").text()
                         .split("\\.");
@@ -87,8 +88,7 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
 
     @Override
     public ReleaseInfo findReleaseInfo(String titleId) throws NotFoundException {
-        RegExUtilsExt.matchesOrElseThrow(Lazy.TITLE_ID_REGEX, titleId);
-        Document document = getDocument(httpGet("/title/%s/releaseinfo", titleId));
+        Document document = getDocument(httpGet("/title/%s/releaseinfo", ImdbRepository.checkTitleId(titleId)));
         String enTitle = document.selectFirst("[itemprop=name]").selectFirst(CssSelectors.TAG_A).text();
         Elements releases = document.selectFirst("#releases").nextElementSibling().select(CssSelectors.TAG_TR);
         List<ReleaseDate> releaseDates = new ArrayList<>(releases.size());
@@ -105,9 +105,8 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
 
     @Override
     public String[] findEpisodesOfSeries(String seriesTitleId, int season) throws NotFoundException {
-        RegExUtilsExt.matchesOrElseThrow(Lazy.TITLE_ID_REGEX, seriesTitleId);
-        Document document =
-            getDocument(httpGet("/title/%s/episodes", seriesTitleId).addParameter("season", String.valueOf(season)));
+        RequestBuilder builder = httpGet("/title/%s/episodes", ImdbRepository.checkTitleId(seriesTitleId));
+        Document document = getDocument(builder.addParameter("season", String.valueOf(season)));
         String title = document.title();
         if (title.endsWith(Lazy.EPISODES_PAGE_TITLE_SUFFIX)) {
             throw new UnexpectedContentException(title);
@@ -141,10 +140,9 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
         return episodes;
     }
 
-    @Nonnull
     @Override
-    public ImdbPerson findPersonById(@Nonnull String nameId) throws NotFoundException {
-        return getObject(ImdbPerson.class, Lazy.PERSON_ID_REGEX, "name", nameId, (person, doc) -> person);
+    public ImdbPerson findPersonById(String nameId) throws NotFoundException {
+        return getObject(ImdbPerson.class, "name", ImdbRepository.checkNameId(nameId), (person, doc) -> person);
     }
 
     private List<String> getRankedList(String path) {
@@ -200,9 +198,8 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
         return stream.map(href -> URIUtil.getQueryValue(href, query)).map(parse).collect(Collectors.toList());
     }
 
-    private <T> T getObject(Class<T> clazz, Pattern p, String type, String id, BiFunction<T, Document, T> decorator)
+    private <T> T getObject(Class<T> clazz, String type, String id, BiFunction<T, Document, T> decorator)
         throws NotFoundException {
-        RegExUtilsExt.matchesOrElseThrow(p, id);
         Document document = getDocument(httpGet("/%s/%s/", type, id));
         try {
             String html = document.selectFirst("script[type=application/ld+json]").html();
@@ -228,8 +225,6 @@ public class ImdbRepositoryImpl extends BaseSite implements ImdbRepository {
         private static final String TEXT_REGEX_STR = "[ \"!#%&'()*+,-./0-9:>?A-Za-z·\u0080-ÿ]+";
         private static final String EPISODES_PAGE_TITLE_SUFFIX = "- Episodes - IMDb";
 
-        private static final Pattern TITLE_ID_REGEX = Pattern.compile("tt\\d{7,8}");
-        private static final Pattern PERSON_ID_REGEX = Pattern.compile("nm\\d{7}");
         private static final Pattern TITLE_HREF_REGEX = Pattern.compile("/title/(?<id>tt\\d{7,8})/");
         private static final Pattern EPISODES_BY_SEASON_TITLE_REGEX =
             Pattern.compile("(?<t>" + TEXT_REGEX_STR + ") - Season (?<s>\\d{1,2}) - IMDb");

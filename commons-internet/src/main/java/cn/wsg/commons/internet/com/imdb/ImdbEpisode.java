@@ -1,6 +1,6 @@
 package cn.wsg.commons.internet.com.imdb;
 
-import cn.wsg.commons.internet.org.schema.item.Episode;
+import cn.wsg.commons.internet.org.schema.item.TVEpisode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class ImdbEpisode extends ImdbCreativeWork implements Episode {
+public class ImdbEpisode extends ImdbCreativeWork implements TVEpisode {
 
     @JsonProperty("actor")
     private List<ImdbPerson> actors;
