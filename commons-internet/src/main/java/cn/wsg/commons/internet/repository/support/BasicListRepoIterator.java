@@ -30,9 +30,17 @@ class BasicListRepoIterator<ID, T> implements ListRepoIterator<ID, T> {
     }
 
     @Override
+    public ID nextIdentifier() {
+        if (!hasNext()) {
+            throw new NoSuchElementException("No more next identifier.");
+        }
+        return idListIterator.next();
+    }
+
+    @Override
     public T next() throws NotFoundException {
         if (!hasNext()) {
-            throw new NoSuchElementException("Doesn't have next entity.");
+            throw new NoSuchElementException("No more next entity.");
         }
         return retrievable.findById(idListIterator.next());
     }
@@ -48,9 +56,17 @@ class BasicListRepoIterator<ID, T> implements ListRepoIterator<ID, T> {
     }
 
     @Override
+    public ID previousIdentifier() {
+        if (!hasPrevious()) {
+            throw new NoSuchElementException("No more previous identifier.");
+        }
+        return idListIterator.previous();
+    }
+
+    @Override
     public T previous() throws NotFoundException {
         if (!hasPrevious()) {
-            throw new NoSuchElementException("Doesn't have previous entity.");
+            throw new NoSuchElementException("No more previous entity.");
         }
         return retrievable.findById(idListIterator.previous());
     }

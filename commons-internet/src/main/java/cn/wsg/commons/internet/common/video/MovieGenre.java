@@ -1,15 +1,13 @@
 package cn.wsg.commons.internet.common.video;
 
 /**
+ * Genres defined on IMDb and Douban.
+ *
  * @author Kingen
+ * @see <a href="https://help.imdb.com/article/contribution/titles/genres/GZDRMS6R742JRGAG">Genres</a>
  */
 public enum MovieGenre {
 
-    /**
-     * Genres defined on both IMDb and Douban.
-     *
-     * @see <a href="https://help.imdb.com/article/contribution/titles/genres/GZDRMS6R742JRGAG">Genres</a>
-     */
     ACTION("Action", "动作"),
     ADULT("Adult", null),
     ADVENTURE("Adventure", "冒险"),

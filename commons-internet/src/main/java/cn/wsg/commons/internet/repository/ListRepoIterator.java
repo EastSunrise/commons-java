@@ -26,6 +26,14 @@ public interface ListRepoIterator<ID, T> extends RepoIterator<T> {
     boolean hasNext();
 
     /**
+     * Returns the next identifier in the repository and advances the cursor position.
+     *
+     * @return the next identifier
+     * @throws NoSuchElementException if the repository has no next identifier
+     */
+    ID nextIdentifier();
+
+    /**
      * Retrieves the next entity in the repository and advances the cursor position.
      *
      * @return the next entity
@@ -54,6 +62,16 @@ public interface ListRepoIterator<ID, T> extends RepoIterator<T> {
      * direction.
      */
     boolean hasPrevious();
+
+    /**
+     * Returns the previous identifier in the repository and moves the cursor position backwards.
+     * <p>
+     * Notes that the cursor won't be moved.
+     *
+     * @return the previous identifier
+     * @throws NoSuchElementException if the repository has no previous identifier
+     */
+    ID previousIdentifier();
 
     /**
      * Retrieves the previous entity in the repository and moves the cursor position backwards.

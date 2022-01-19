@@ -6,7 +6,6 @@ import cn.wsg.commons.internet.support.NotFoundException;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -34,14 +33,17 @@ class BasicLinkedRepoIterator<ID, T> implements LinkedRepoIterator<ID, T> {
     }
 
     @Override
-    public Optional<ID> nextIdentifier() {
-        return Optional.ofNullable(cursor);
+    public ID nextIdentifier() {
+        if (!hasNext()) {
+            throw new NoSuchElementException("No more identifier.");
+        }
+        return cursor;
     }
 
     @Override
     public T next() throws NotFoundException {
         if (!hasNext()) {
-            throw new NoSuchElementException("Doesn't have next entity.");
+            throw new NoSuchElementException("No more entity.");
         }
         T t = retrievable.findById(cursor);
         try {

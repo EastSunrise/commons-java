@@ -3,7 +3,6 @@ package cn.wsg.commons.internet.repository;
 import cn.wsg.commons.internet.support.NotFoundException;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 /**
  * An iterator for a singly-linked repository that allows to traverse the repository in one
@@ -29,11 +28,12 @@ public interface LinkedRepoIterator<ID, T> extends RepoIterator<T> {
     /**
      * Returns the next identifier in the repository.
      * <p>
-     * Note that the cursor won't be moved.
+     * Notes that the cursor won't be moved.
      *
-     * @return the next identifier, or {@code Optional#empty()} if there are no more identifiers
+     * @return the next identifier
+     * @throws NoSuchElementException if the repository has no next identifier
      */
-    Optional<ID> nextIdentifier();
+    ID nextIdentifier();
 
     /**
      * Retrieves the next entity in the repository and advances the cursor position.
