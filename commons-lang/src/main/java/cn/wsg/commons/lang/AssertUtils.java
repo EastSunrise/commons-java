@@ -26,7 +26,7 @@ public final class AssertUtils {
      * Tests whether the given iterator is monotonous by the specified comparator.
      *
      * @param iterable the iterable object to be tested
-     * @return {@code false} if any element is <i>largest</i> (by the specified comparator) than the
+     * @return {@code false} if any element is <b>larger</b> (by the specified comparator) than the
      * next one, otherwise {@code true}
      */
     public static <E> boolean isMonotonous(Iterable<E> iterable, Comparator<? super E> comparator) {

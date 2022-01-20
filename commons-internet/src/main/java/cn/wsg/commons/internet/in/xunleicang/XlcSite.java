@@ -1,7 +1,7 @@
 package cn.wsg.commons.internet.in.xunleicang;
 
 import cn.wsg.commons.internet.BaseSite;
-import cn.wsg.commons.internet.common.video.VideoConstants;
+import cn.wsg.commons.internet.common.video.VideoConsts;
 import cn.wsg.commons.internet.common.video.resource.ResourceState;
 import cn.wsg.commons.internet.common.video.resource.VideoResourceRepository;
 import cn.wsg.commons.internet.download.DownloadLink;
@@ -119,7 +119,7 @@ public final class XlcSite extends BaseSite implements VideoResourceRepository<X
         Element font = header.selectFirst(CssSelectors.TAG_FONT);
         if (font != null) {
             int year = Integer.parseInt(StringUtils.strip(font.text(), "()"));
-            if (year >= VideoConstants.MOVIE_START_YEAR && year <= Year.now().getValue()) {
+            if (year >= VideoConsts.MOVIE_START_YEAR && year <= Year.now().getValue()) {
                 item.setYear(year);
             }
         }

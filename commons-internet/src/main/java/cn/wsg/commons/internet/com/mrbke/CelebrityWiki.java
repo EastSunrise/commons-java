@@ -72,7 +72,7 @@ public interface CelebrityWiki extends RepoRetrievable<CelebrityIndex, Celebrity
      * Retrieves albums of the celebrity.
      *
      * @param index must not be {@literal null}
-     * @return list of albums of the celebrity (empty if no albums)
+     * @return list of albums of the celebrity (empty if no albums), may be duplicate.
      * @throws NotFoundException if the target celebrity is not found
      */
     List<AlbumIndex> findAlbumsByCelebrity(CelebrityIndex index) throws NotFoundException;

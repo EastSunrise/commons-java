@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.wsg.commons</groupId>
@@ -43,6 +43,26 @@
             <dependency>
                 <artifactId>commons-lang</artifactId>
                 <groupId>cn.wsg.commons</groupId>
+                <version>${wsg.commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.wsg.commons</groupId>
+                <artifactId>commons-data</artifactId>
+                <version>${wsg.commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.wsg.commons</groupId>
+                <artifactId>commons-system</artifactId>
+                <version>${wsg.commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.wsg.commons</groupId>
+                <artifactId>commons-internet</artifactId>
+                <version>${wsg.commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.wsg.commons</groupId>
+                <artifactId>commons-web</artifactId>
                 <version>${wsg.commons.version}</version>
             </dependency>
 
@@ -128,6 +148,13 @@
                 <artifactId>mybatis</artifactId>
                 <version>${mybatis.version}</version>
             </dependency>
+
+            <!-- MinIO -->
+            <dependency>
+                <artifactId>minio</artifactId>
+                <groupId>io.minio</groupId>
+                <version>${minio.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -158,6 +185,7 @@
         <poi.version>4.1.2</poi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>1.7.32</slf4j.version>
+        <minio.version>8.2.2</minio.version>
         <wsg.commons.version>1.0-SNAPSHOT</wsg.commons.version>
     </properties>
 </project>

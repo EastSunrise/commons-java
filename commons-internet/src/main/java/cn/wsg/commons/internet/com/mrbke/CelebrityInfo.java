@@ -70,7 +70,7 @@ public class CelebrityInfo {
 
     private String birthplace;
 
-    private String nation;
+    private String ethnicity;
 
     private Map<String, String> others;
 }

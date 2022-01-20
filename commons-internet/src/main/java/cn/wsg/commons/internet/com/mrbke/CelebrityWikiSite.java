@@ -342,7 +342,7 @@ public final class CelebrityWikiSite extends BaseSite implements CelebrityWiki {
         info.setFirm(getString(metadata, "事务所"));
         info.setSchool(getString(metadata, "毕业院校"));
         info.setBirthplace(getString(metadata, "出生地"));
-        info.setNation(getString(metadata, "民族"));
+        info.setEthnicity(getString(metadata, "民族"));
         if (!metadata.isEmpty()) {
             info.setOthers(new HashMap<>(metadata));
         }
@@ -442,7 +442,7 @@ public final class CelebrityWikiSite extends BaseSite implements CelebrityWiki {
             CELEBRITY_URL_REGEX = Pattern.compile("/(?<t>" + types + ")/m(?<id>\\d+)/((info|pic|news|comm)\\.html)?");
             String albumTypes = Arrays.stream(AlbumType.values()).map(Enum::name).map(String::toLowerCase)
                 .collect(Collectors.joining("|"));
-            ALBUM_URL_REGEX = Pattern.compile("/tuku/(?<t>" + albumTypes + ")/(?<id>\\d+)\\.html");
+            ALBUM_URL_REGEX = Pattern.compile("/tuku/(?<t>" + albumTypes + ")/(?<id>\\d+)(_\\d+)?\\.html");
             String bloodTypes = Arrays.stream(BloodType.values()).map(Enum::name).collect(Collectors.joining("|"));
             BLOOD_TYPE_REGEX = Pattern.compile("(?<t>" + bloodTypes + ")\\s*型?", Pattern.CASE_INSENSITIVE);
         }

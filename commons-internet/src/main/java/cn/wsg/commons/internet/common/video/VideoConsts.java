@@ -5,10 +5,10 @@ package cn.wsg.commons.internet.common.video;
  *
  * @author Kingen
  */
-public final class VideoConstants {
+public final class VideoConsts {
 
     public static final int MOVIE_START_YEAR = 1895;
 
-    private VideoConstants() {
+    private VideoConsts() {
     }
 }
