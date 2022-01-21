@@ -21,6 +21,10 @@ public class JoinedValueDeserializer extends FromStringDeserializer<List<?>> imp
     private final String separator;
     private final JavaType targetType;
 
+    protected JoinedValueDeserializer() {
+        this(DEFAULT_SEPARATOR, null);
+    }
+
     protected JoinedValueDeserializer(JavaType targetType) {
         this(DEFAULT_SEPARATOR, targetType);
     }
@@ -32,6 +36,16 @@ public class JoinedValueDeserializer extends FromStringDeserializer<List<?>> imp
     }
 
     @Override
+    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty bp) {
+        JsonJoinedValue joinedValue = bp.getAnnotation(JsonJoinedValue.class);
+        if (null != joinedValue) {
+            return new JoinedValueDeserializer(joinedValue.separator(), bp.getType());
+        } else {
+            return new JoinedValueDeserializer(bp.getType());
+        }
+    }
+
+    @Override
     protected List<?> _deserialize(String text, DeserializationContext ctxt) {
         String[] values = StringUtils.splitByWholeSeparator(text, separator);
         ObjectMapper mapper = (ObjectMapper)ctxt.getParser().getCodec();
@@ -40,15 +54,5 @@ public class JoinedValueDeserializer extends FromStringDeserializer<List<?>> imp
             collection.add(mapper.convertValue(value.strip(), targetType.getContentType()));
         }
         return collection;
-    }
-
-    @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty bp) {
-        JsonJoinedValue joinedValue = bp.getAnnotation(JsonJoinedValue.class);
-        if (null != joinedValue) {
-            return new JoinedValueDeserializer(joinedValue.separator(), bp.getType());
-        } else {
-            return new JoinedValueDeserializer(bp.getType());
-        }
     }
 }

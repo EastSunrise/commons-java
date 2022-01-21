@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation indicated the annotated property is a {@link java.time.Duration} and the format.
+ * Annotation to configure the format of a {@link java.time.Duration}.
  *
  * @author Kingen
  * @see FormattedDurationDeserializer

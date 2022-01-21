@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation indicated the annotated property is deserialized from a joined string.
+ * Annotation to indicate that the annotated property is deserialized from a joined string.
  *
  * @author Kingen
  * @see JoinedValueDeserializer
