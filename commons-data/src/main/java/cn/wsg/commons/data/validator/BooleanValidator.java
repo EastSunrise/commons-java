@@ -1,6 +1,7 @@
 package cn.wsg.commons.data.validator;
 
 import cn.wsg.commons.data.Descriptors;
+
 import java.util.List;
 import java.util.function.Function;
 
@@ -16,12 +17,12 @@ public class BooleanValidator extends AbstractParsableValidator<Boolean> {
     }
 
     @Override
-    protected Boolean parseText(String text) {
-        return Boolean.parseBoolean(text);
+    public void describe(List<Boolean> values) {
+        Descriptors.enumerate(values, Function.identity());
     }
 
     @Override
-    public void describe(List<Boolean> values) {
-        Descriptors.enumerate(values, Function.identity());
+    protected Boolean parseText(String text) {
+        return Boolean.parseBoolean(text);
     }
 }

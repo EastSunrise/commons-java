@@ -1,10 +1,12 @@
 package cn.wsg.commons.system.csv;
 
-import cn.wsg.commons.lang.MapUtilsExt;
-import cn.wsg.commons.lang.function.Getter;
+import cn.wsg.commons.function.Getter;
+import cn.wsg.commons.util.MapUtilsExt;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -15,7 +17,6 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * A descriptor of part properties of beans that matches the data in format of csv.
@@ -41,13 +42,12 @@ public final class CsvTemplate<T> {
      * @throws IllegalArgumentException if any given property is not contained in the class
      * @see BeanInfo
      */
-    public static <T> CsvTemplate<T> create(Class<T> clazz, ObjectMapper mapper,
-        String... properties) throws IntrospectionException {
+    public static <T> CsvTemplate<T> create(Class<T> clazz, ObjectMapper mapper, String... properties)
+        throws IntrospectionException {
         BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
         Map<String, PropertyDescriptor> descriptors = new HashMap<>(properties.length);
         for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
-            MapUtilsExt.putIfAbsentOrElseThrow(descriptors, propertyDescriptor.getName(),
-                propertyDescriptor);
+            MapUtilsExt.putIfAbsentOrElseThrow(descriptors, propertyDescriptor.getName(), propertyDescriptor);
         }
         String[] props = properties;
         if (ArrayUtils.isEmpty(props)) {

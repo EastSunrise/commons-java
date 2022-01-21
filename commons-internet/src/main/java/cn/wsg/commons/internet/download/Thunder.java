@@ -1,9 +1,8 @@
 package cn.wsg.commons.internet.download;
 
-import cn.wsg.commons.lang.RegExUtilsExt;
+import cn.wsg.commons.util.RegExUtilsExt;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.annotation.Nonnull;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -33,7 +32,7 @@ public final class Thunder {
     /**
      * Encode a url to a thunder url.
      */
-    public static String encodeThunder(@Nonnull String url) {
+    public static String encodeThunder(String url) {
         if (StringUtils.startsWithIgnoreCase(url, THUNDER_PREFIX)) {
             return url;
         }
@@ -44,7 +43,7 @@ public final class Thunder {
     /**
      * Decode a thunder to a common url.
      */
-    public static String decodeThunder(@Nonnull String url, Charset charset) {
+    public static String decodeThunder(String url, Charset charset) {
         String decoded = url.strip();
         while (StringUtils.startsWithIgnoreCase(decoded, THUNDER_PREFIX)) {
             decoded = StringUtils.replace(decoded, "%2b", "+");

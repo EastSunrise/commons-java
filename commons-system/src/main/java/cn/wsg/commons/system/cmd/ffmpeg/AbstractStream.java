@@ -1,12 +1,13 @@
 package cn.wsg.commons.system.cmd.ffmpeg;
 
-import cn.wsg.commons.lang.jackson.JsonDurationFormat;
+import cn.wsg.commons.jackson.JsonDurationFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.time.Duration;
 import lombok.Getter;
 import org.apache.commons.lang3.math.Fraction;
+
+import java.time.Duration;
 
 /**
  * This class provides a skeleton implementation of the information about each media stream
@@ -62,7 +63,7 @@ public abstract class AbstractStream {
     private Long durationTs;
 
     @JsonProperty("duration")
-    @JsonDurationFormat(format = JsonDurationFormat.Format.DOUBLE)
+    @JsonDurationFormat(format = JsonDurationFormat.Format.NUMBER_AS_SECONDS)
     private Duration duration;
 
     AbstractStream() {

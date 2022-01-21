@@ -1,6 +1,6 @@
 package cn.wsg.commons.internet.download;
 
-import cn.wsg.commons.lang.AssertUtils;
+import cn.wsg.commons.util.AssertUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 

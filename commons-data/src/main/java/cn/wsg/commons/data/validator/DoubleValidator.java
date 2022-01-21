@@ -1,6 +1,5 @@
 package cn.wsg.commons.data.validator;
 
-
 /**
  * Validates whether the values are valid doubles.
  *

@@ -2,7 +2,6 @@ package cn.wsg.commons.internet.download;
 
 import org.apache.commons.lang3.StringUtils;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +24,6 @@ public final class ThunderDiskLink extends BaseDownloadLink implements Encrypted
         this.password = Objects.requireNonNull(password);
     }
 
-    @Nonnull
     public static ThunderDiskLink of(String url, String password, String description) throws InvalidLinkException {
         if (!StringUtils.containsIgnoreCase(url, THUNDER_DISK_HOST)) {
             throw new InvalidLinkException(ThunderDiskLink.class, url);

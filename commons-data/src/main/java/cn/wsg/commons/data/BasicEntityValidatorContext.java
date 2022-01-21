@@ -1,17 +1,7 @@
 package cn.wsg.commons.data;
 
-import cn.wsg.commons.data.validator.BooleanValidator;
-import cn.wsg.commons.data.validator.DoubleValidator;
-import cn.wsg.commons.data.validator.DurationValidator;
-import cn.wsg.commons.data.validator.FloatValidator;
-import cn.wsg.commons.data.validator.IntValidator;
-import cn.wsg.commons.data.validator.LocalDateTimeValidator;
-import cn.wsg.commons.data.validator.LocalDateValidator;
-import cn.wsg.commons.data.validator.LocalTimeValidator;
-import cn.wsg.commons.data.validator.LongValidator;
-import cn.wsg.commons.data.validator.StringValidator;
-import cn.wsg.commons.data.validator.TypeValidator;
-import cn.wsg.commons.data.validator.URLValidator;
+import cn.wsg.commons.data.validator.*;
+
 import java.net.URL;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -65,7 +55,7 @@ public class BasicEntityValidatorContext implements EntityValidatorContext {
     }
 
     @Override
-    public Validator<?> getValidator(String property, Class<?> clazz) {
+    public Validator<?> getValidator(String property, Class<?> clazz) throws ValidatorNotFoundException {
         Validator<?> validator = propertyValidators.get(property);
         if (validator != null) {
             return validator;
@@ -78,12 +68,12 @@ public class BasicEntityValidatorContext implements EntityValidatorContext {
         if (validator != null) {
             return validator;
         }
-        return new TypeValidator();
+        throw new ValidatorNotFoundException("No validator is found for " + property + " or " + clazz);
     }
 
     @Override
-    public void handleException(Class<?> clazz, String property, Class<?> propertyType) {
-        throw new RuntimeException("Unhandled unexpected problem");
+    public Validator<?> handleException(Class<?> clazz, String property, Class<?> propertyType) {
+        return new TypeValidator();
     }
 
     private static final class Lazy {

@@ -1,12 +1,13 @@
 package cn.wsg.commons.system.cmd.ffmpeg;
 
-import cn.wsg.commons.lang.jackson.JsonDurationFormat;
+import cn.wsg.commons.jackson.JsonDurationFormat;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
-import lombok.Getter;
 
 /**
  * The information about the container format of the input multimedia stream.
@@ -32,7 +33,7 @@ public class Format {
     private long bitRate;
 
     @JsonProperty(value = "duration", required = true)
-    @JsonDurationFormat(format = JsonDurationFormat.Format.DOUBLE)
+    @JsonDurationFormat(format = JsonDurationFormat.Format.NUMBER_AS_SECONDS)
     private Duration duration;
 
     @JsonProperty(value = "start_time", required = true)

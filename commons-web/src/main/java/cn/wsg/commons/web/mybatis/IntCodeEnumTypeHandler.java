@@ -1,7 +1,7 @@
 package cn.wsg.commons.web.mybatis;
 
-import cn.wsg.commons.lang.EnumUtilExt;
-import cn.wsg.commons.lang.function.IntCodeSupplier;
+import cn.wsg.commons.function.IntCodeSupplier;
+import cn.wsg.commons.util.EnumUtilExt;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;

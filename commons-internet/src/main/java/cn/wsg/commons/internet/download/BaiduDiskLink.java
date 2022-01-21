@@ -2,7 +2,6 @@ package cn.wsg.commons.internet.download;
 
 import org.apache.commons.lang3.StringUtils;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,7 +25,6 @@ public final class BaiduDiskLink extends BaseDownloadLink implements EncryptedLi
         this.password = password;
     }
 
-    @Nonnull
     public static BaiduDiskLink of(String url, String password, String desc) throws InvalidLinkException {
         if (!StringUtils.containsIgnoreCase(url, BAIDU_DISK_HOST)) {
             throw new InvalidLinkException(BaiduDiskLink.class, url);

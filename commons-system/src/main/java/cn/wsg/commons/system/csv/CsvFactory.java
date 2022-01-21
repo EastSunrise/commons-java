@@ -1,6 +1,12 @@
 package cn.wsg.commons.system.csv;
 
-import cn.wsg.commons.lang.function.Getter;
+import cn.wsg.commons.function.Getter;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -8,11 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
 
 /**
  * A factory to provide operations of reading and writing between Java beans and data in format of
@@ -41,13 +42,12 @@ public class CsvFactory {
      * @param charset     charset of the stream
      * @return list of beans which store the data read from the stream
      */
-    public <T> List<T> readCsv(InputStream input, Supplier<T> constructor, CsvTemplate<T> template,
-        Charset charset) throws IOException {
+    public <T> List<T> readCsv(InputStream input, Supplier<T> constructor, CsvTemplate<T> template, Charset charset)
+        throws IOException {
         CSVFormat csvFormat = format;
         Map<String, CsvSetter<T>> setters = template.getSetters();
         if (MapUtils.isNotEmpty(setters)) {
-            csvFormat = csvFormat.withHeader(setters.keySet().toArray(new String[0]))
-                .withFirstRecordAsHeader();
+            csvFormat = csvFormat.withHeader(setters.keySet().toArray(new String[0])).withFirstRecordAsHeader();
         }
         CSVParser parser = CSVParser.parse(input, charset, csvFormat);
         List<T> result = new ArrayList<>();
@@ -71,8 +71,7 @@ public class CsvFactory {
      * @param template the structure of beans to be written
      * @see CSVPrinter#print(Object)
      */
-    public <T> void writeCsv(Appendable output, Iterable<T> beans, CsvTemplate<T> template)
-        throws IOException {
+    public <T> void writeCsv(Appendable output, Iterable<T> beans, CsvTemplate<T> template) throws IOException {
         CSVPrinter printer = format.print(output);
         Map<String, Getter<T, ?>> getters = template.getGetters();
         printer.printRecord(getters.keySet());

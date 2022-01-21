@@ -1,6 +1,5 @@
 package cn.wsg.commons.data;
 
-
 /**
  * Represents a function that converts an object of unknown type to the target type.
  *

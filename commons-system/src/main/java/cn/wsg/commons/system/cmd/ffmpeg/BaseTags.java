@@ -1,15 +1,16 @@
 package cn.wsg.commons.system.cmd.ffmpeg;
 
-import cn.wsg.commons.lang.DatetimeConsts;
-import cn.wsg.commons.lang.jackson.JsonDurationFormat;
-import cn.wsg.commons.lang.jackson.JsonJoinedValue;
+import cn.wsg.commons.DatetimeConsts;
+import cn.wsg.commons.jackson.JsonDurationFormat;
+import cn.wsg.commons.jackson.JsonJoinedValue;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import lombok.Getter;
 
 /**
  * Common tags contained in a stream.

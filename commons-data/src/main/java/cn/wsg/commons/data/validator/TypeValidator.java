@@ -1,6 +1,7 @@
 package cn.wsg.commons.data.validator;
 
 import cn.wsg.commons.data.Descriptors;
+
 import java.util.List;
 import java.util.function.Function;
 

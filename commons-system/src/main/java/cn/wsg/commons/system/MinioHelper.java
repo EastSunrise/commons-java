@@ -1,6 +1,6 @@
 package cn.wsg.commons.system;
 
-import cn.wsg.commons.lang.WebConsts;
+import cn.wsg.commons.WebConsts;
 import io.minio.*;
 import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public final class MinioHelper {
      */
     public static String upload(MinioClient client, URL url)
         throws IOException, InvalidKeyException, InvalidResponseException, InsufficientDataException,
-        NoSuchAlgorithmException, ServerException, InternalException, XmlParserException, ErrorResponseException {
+        NoSuchAlgorithmException, InternalException, XmlParserException, ErrorResponseException, ServerException {
         String bucketName = url.getHost(), objectName = url.getFile();
         boolean exists = client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
         if (!exists) {
@@ -65,7 +65,7 @@ public final class MinioHelper {
      */
     public static String uploadIfAbsent(MinioClient client, URL url)
         throws IOException, InvalidKeyException, InvalidResponseException, InsufficientDataException,
-        NoSuchAlgorithmException, ServerException, InternalException, XmlParserException, ErrorResponseException {
+        NoSuchAlgorithmException, InternalException, XmlParserException, ErrorResponseException, ServerException {
         String bucketName = url.getHost(), objectName = url.getFile();
         boolean exists = client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
         if (!exists) {

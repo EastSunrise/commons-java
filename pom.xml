@@ -9,6 +9,37 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
+    <modules>
+        <module>commons-internet</module>
+        <module>commons-lang</module>
+        <module>commons-system</module>
+        <module>commons-web</module>
+        <module>commons-data</module>
+    </modules>
+
+    <properties>
+        <commons-collections4.version>4.4</commons-collections4.version>
+        <commons-lang3.version>3.11</commons-lang3.version>
+        <commons-csv.version>1.8</commons-csv.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        <commons-text.version>1.9</commons-text.version>
+        <httpclient.version>4.5.13</httpclient.version>
+        <jackson-bom.version>2.12.6</jackson-bom.version>
+        <jsoup.version>1.11.3</jsoup.version>
+        <guava.version>31.0.1-jre</guava.version>
+        <junit.version>5.7.2</junit.version>
+        <logback.version>1.2.10</logback.version>
+        <lombok.version>1.18.22</lombok.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <mybatis.version>3.5.7</mybatis.version>
+        <poi.version>4.1.2</poi.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <slf4j.version>1.7.32</slf4j.version>
+        <minio.version>8.2.2</minio.version>
+        <wsg.commons.version>1.0-SNAPSHOT</wsg.commons.version>
+    </properties>
+
     <dependencies>
         <!--lombok & logback-->
         <dependency>
@@ -157,35 +188,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <modules>
-        <module>commons-internet</module>
-        <module>commons-lang</module>
-        <module>commons-system</module>
-        <module>commons-web</module>
-        <module>commons-data</module>
-    </modules>
-
-    <properties>
-        <commons-collections4.version>4.4</commons-collections4.version>
-        <commons-lang3.version>3.11</commons-lang3.version>
-        <commons-csv.version>1.8</commons-csv.version>
-        <commons-io.version>2.11.0</commons-io.version>
-        <commons-text.version>1.9</commons-text.version>
-        <httpclient.version>4.5.13</httpclient.version>
-        <jackson-bom.version>2.12.6</jackson-bom.version>
-        <jsoup.version>1.11.3</jsoup.version>
-        <guava.version>31.0.1-jre</guava.version>
-        <junit.version>5.7.2</junit.version>
-        <logback.version>1.2.10</logback.version>
-        <lombok.version>1.16.22</lombok.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <mybatis.version>3.5.7</mybatis.version>
-        <poi.version>4.1.2</poi.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <slf4j.version>1.7.32</slf4j.version>
-        <minio.version>8.2.2</minio.version>
-        <wsg.commons.version>1.0-SNAPSHOT</wsg.commons.version>
-    </properties>
 </project>

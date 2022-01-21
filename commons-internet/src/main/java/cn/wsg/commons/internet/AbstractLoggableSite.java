@@ -1,8 +1,8 @@
 package cn.wsg.commons.internet;
 
+import cn.wsg.commons.SystemConsts;
 import cn.wsg.commons.internet.support.SiteHelper;
-import cn.wsg.commons.lang.StringUtilsExt;
-import cn.wsg.commons.lang.SystemConsts;
+import cn.wsg.commons.util.StringUtilsExt;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;

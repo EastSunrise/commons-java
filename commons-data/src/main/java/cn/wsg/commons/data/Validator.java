@@ -1,6 +1,7 @@
 package cn.wsg.commons.data;
 
 import cn.wsg.commons.data.validator.AbstractValidator;
+
 import java.util.List;
 
 /**

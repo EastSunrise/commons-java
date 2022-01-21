@@ -1,5 +1,7 @@
 package cn.wsg.commons.data;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -10,7 +12,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * The class provides basic methods to validate entities of a complex type and properties contained
@@ -64,8 +65,7 @@ public final class EntityValidator<T> {
                 try {
                     validator = context.getValidator(property, propertyType);
                 } catch (ValidatorNotFoundException e) {
-                    context.handleException(clazz, property, propertyType);
-                    continue;
+                    validator = context.handleException(clazz, property, propertyType);
                 }
                 validators.put(property, new PropertyValidator(getter, validator));
             }
@@ -78,8 +78,7 @@ public final class EntityValidator<T> {
      *
      * @param entities entities to be validated
      */
-    public void validate(List<T> entities)
-        throws InvocationTargetException, IllegalAccessException {
+    public void validate(List<T> entities) throws InvocationTargetException, IllegalAccessException {
         validate(entities, validators.keySet().toArray(new String[0]));
     }
 

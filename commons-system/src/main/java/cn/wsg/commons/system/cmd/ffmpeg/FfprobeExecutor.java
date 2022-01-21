@@ -6,16 +6,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.Getter;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.math.Fraction;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import lombok.Getter;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.math.Fraction;
 
 /**
  * The executor of ffprobe that gathers information from multimedia streams and prints it in
@@ -81,15 +82,13 @@ public class FfprobeExecutor extends CommandExecutor {
         return this.showStreams(path, "a", AudioStream.class);
     }
 
-    private <T extends AbstractStream> List<T>
-    showStreams(String path, String arg, Class<T> clazz) throws IOException {
-        return this.getResult(path, "-show_streams", "-select_streams", arg).streams
-            .stream().map(clazz::cast).collect(Collectors.toList());
+    private <T extends AbstractStream> List<T> showStreams(String path, String arg, Class<T> clazz) throws IOException {
+        return this.getResult(path, "-show_streams", "-select_streams", arg).streams.stream().map(clazz::cast)
+            .collect(Collectors.toList());
     }
 
     private Result getResult(String path, String... args) throws IOException {
-        String[] commands = ArrayUtils
-            .addAll(args, "-v", "quiet", "-of", "json", "-i", "\"" + path + "\"");
+        String[] commands = ArrayUtils.addAll(args, "-v", "quiet", "-of", "json", "-i", "\"" + path + "\"");
         CommandTask task = this.createTask(commands);
         task.execute();
         try {
@@ -103,8 +102,7 @@ public class FfprobeExecutor extends CommandExecutor {
     private static class Lazy {
 
         private static final ObjectMapper MAPPER = new ObjectMapper()
-            .registerModule(new SimpleModule()
-                .addDeserializer(Fraction.class, new FractionDeserializer()))
+            .registerModule(new SimpleModule().addDeserializer(Fraction.class, new FractionDeserializer()))
             .registerModule(new JavaTimeModule());
     }
 

@@ -1,15 +1,11 @@
 package cn.wsg.commons.data;
 
-import cn.wsg.commons.lang.AssertUtils;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * This class consists exclusively of static methods that provides common descriptors.
@@ -41,29 +37,23 @@ public final class Descriptors {
         Map<K, List<T>> map = values.stream().collect(Collectors.groupingBy(classifier));
         if (!map.isEmpty()) {
             log.info("Enumerating {} distinct keys...", map.size());
-            map.entrySet().stream()
-                .sorted(Comparator.comparing(entry -> entry.getValue().size()))
-                .forEach(entry -> log
-                    .info("Key: {}, count: {}", entry.getKey(), entry.getValue().size()));
+            map.entrySet().stream().sorted(Comparator.comparing(entry -> entry.getValue().size()))
+                .forEach(entry -> log.info("Key: {}, count: {}", entry.getKey(), entry.getValue().size()));
         }
     }
 
     /**
      * Tests whether each element of the values matches the predicate.
      */
-    public static <T, K> void test(Collection<T> values, Predicate<T> predicate,
-        Function<T, K> identifier) {
-        values.stream().filter(predicate).map(identifier)
-            .forEach(id -> log.info("{}", id));
+    public static <T, K> void test(Collection<T> values, Predicate<T> predicate, Function<T, K> identifier) {
+        values.stream().filter(predicate).map(identifier).forEach(id -> log.info("{}", id));
     }
 
     /**
      * Lists stationary points of a list of values which are monotonous in most sections.
-     *
-     * @see AssertUtils#isMonotonous(Iterator, Comparator)
      */
-    public static <T, K> void stationaryPoints(Iterable<T> values,
-        Comparator<? super T> comparator, Function<T, K> identifier) {
+    public static <T, K> void stationaryPoints(Iterable<T> values, Comparator<? super T> comparator,
+        Function<T, K> identifier) {
         Iterator<T> iterator = values.iterator();
         if (!iterator.hasNext()) {
             return;

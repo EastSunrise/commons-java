@@ -1,7 +1,8 @@
 package cn.wsg.commons.data.validator;
 
+import cn.wsg.commons.DatetimeConsts;
 import cn.wsg.commons.data.Descriptors;
-import cn.wsg.commons.lang.DatetimeConsts;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -26,12 +27,12 @@ public class LocalDateTimeValidator extends AbstractTimeValidator<LocalDateTime>
     }
 
     @Override
-    protected LocalDateTime parse(String text) {
-        return LocalDateTime.parse(text, formatter);
+    public void describe(List<LocalDateTime> values) {
+        Descriptors.range(values);
     }
 
     @Override
-    public void describe(List<LocalDateTime> values) {
-        Descriptors.range(values);
+    protected LocalDateTime parse(String text) {
+        return LocalDateTime.parse(text, formatter);
     }
 }

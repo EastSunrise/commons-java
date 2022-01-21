@@ -1,7 +1,7 @@
 package cn.wsg.commons.internet.util;
 
 import cn.wsg.commons.internet.support.CssSelectors;
-import cn.wsg.commons.lang.MapUtilsExt;
+import cn.wsg.commons.util.MapUtilsExt;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

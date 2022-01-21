@@ -2,6 +2,7 @@ package cn.wsg.commons.data.validator;
 
 import cn.wsg.commons.data.Descriptors;
 import cn.wsg.commons.data.InvalidValueException;
+
 import java.util.List;
 
 /**
@@ -10,11 +11,15 @@ import java.util.List;
  * @param <N> type of numbers
  * @author Kingen
  */
-abstract class AbstractNumberValidator<N extends Number & Comparable<N>>
-    extends AbstractParsableValidator<N> {
+abstract class AbstractNumberValidator<N extends Number & Comparable<N>> extends AbstractParsableValidator<N> {
 
     protected AbstractNumberValidator(Class<N> clazz) {
         super(clazz);
+    }
+
+    @Override
+    public void describe(List<N> values) {
+        Descriptors.range(values);
     }
 
     @Override
@@ -33,9 +38,4 @@ abstract class AbstractNumberValidator<N extends Number & Comparable<N>>
      * @return the specified value
      */
     protected abstract N parseValue(String text);
-
-    @Override
-    public void describe(List<N> values) {
-        Descriptors.range(values);
-    }
 }

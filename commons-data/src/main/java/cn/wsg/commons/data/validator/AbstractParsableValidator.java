@@ -20,7 +20,7 @@ public abstract class AbstractParsableValidator<E> extends AbstractValidator<E> 
     @SuppressWarnings("unchecked")
     public E convert(Object value) throws InvalidValueException {
         if (clazz.isInstance(value)) {
-            return (E) value;
+            return (E)value;
         }
         return parseText(value.toString());
     }

@@ -3,7 +3,8 @@ package cn.wsg.commons.internet.org.schema.item;
 import cn.wsg.commons.internet.org.schema.common.Source;
 
 /**
- * Any offered product or service. For example: a pair of shoes; a concert ticket; the rental of a car; a haircut; or an episode of a TV show streamed online.
+ * Any offered product or service. For example: a pair of shoes; a concert ticket; the rental of a car; a haircut; or an
+ * episode of a TV show streamed online.
  *
  * @author Kingen
  */

@@ -2,7 +2,6 @@ package cn.wsg.commons.internet.download;
 
 import org.apache.commons.lang3.StringUtils;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +24,6 @@ public final class UcDiskLink extends BaseDownloadLink {
         this.ck = ck;
     }
 
-    @Nonnull
     public static UcDiskLink of(String url, String description) throws InvalidLinkException {
         if (!StringUtils.containsIgnoreCase(url, UC_DISK_HOST)) {
             throw new InvalidLinkException(UcDiskLink.class, url);

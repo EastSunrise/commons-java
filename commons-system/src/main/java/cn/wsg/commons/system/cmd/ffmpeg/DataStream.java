@@ -1,8 +1,9 @@
 package cn.wsg.commons.system.cmd.ffmpeg;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.LocalDateTime;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 /**
  * The data stream.

@@ -2,9 +2,10 @@ package cn.wsg.commons.system.cmd.ffmpeg;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import org.apache.commons.lang3.math.Fraction;
+
+import java.time.LocalDateTime;
 
 /**
  * The video stream.

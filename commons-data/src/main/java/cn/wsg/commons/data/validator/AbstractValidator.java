@@ -3,9 +3,10 @@ package cn.wsg.commons.data.validator;
 import cn.wsg.commons.data.Descriptor;
 import cn.wsg.commons.data.InvalidValueException;
 import cn.wsg.commons.data.Validator;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * This class provides a skeletal implementation of {@link Validator}.

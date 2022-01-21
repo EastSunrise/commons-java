@@ -1,11 +1,12 @@
 package cn.wsg.commons.data.validator;
 
 import cn.wsg.commons.data.InvalidValueException;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Validates whether the string values matches a pattern.
@@ -30,7 +31,7 @@ public class PatternValidator extends AbstractValidator<MatchResult> {
     @Override
     public MatchResult convert(Object value) throws InvalidValueException {
         if (value instanceof MatchResult) {
-            return (MatchResult) value;
+            return (MatchResult)value;
         }
         String text = value.toString();
         Matcher matcher = pattern.matcher(text);

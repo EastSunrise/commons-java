@@ -1,6 +1,6 @@
 package cn.wsg.commons.system.csv;
 
-import cn.wsg.commons.lang.function.Setter;
+import cn.wsg.commons.function.Setter;
 
 /**
  * A function to convert a string and set it as a property of the bean.

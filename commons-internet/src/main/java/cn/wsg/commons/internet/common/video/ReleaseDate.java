@@ -1,6 +1,6 @@
 package cn.wsg.commons.internet.common.video;
 
-import cn.wsg.commons.lang.Region;
+import cn.wsg.commons.Region;
 import lombok.Getter;
 
 import java.time.LocalDate;

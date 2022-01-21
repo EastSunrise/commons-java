@@ -1,7 +1,8 @@
 package cn.wsg.commons.internet.org.schema.item;
 
 /**
- * The act of searching for an object.\n\nRelated actions:\n\n* [[FindAction]]: SearchAction generally leads to a FindAction, but not necessarily.
+ * The act of searching for an object.\n\nRelated actions:\n\n* [[FindAction]]: SearchAction generally leads to a
+ * FindAction, but not necessarily.
  *
  * @author Kingen
  */

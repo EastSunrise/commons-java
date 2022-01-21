@@ -1,6 +1,7 @@
 package cn.wsg.commons.data.validator;
 
 import cn.wsg.commons.data.Descriptors;
+
 import java.time.Duration;
 import java.util.List;
 

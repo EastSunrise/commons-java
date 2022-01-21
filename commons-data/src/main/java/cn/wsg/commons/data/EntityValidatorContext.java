@@ -1,6 +1,5 @@
 package cn.wsg.commons.data;
 
-
 /**
  * The context when validating entities.
  *
@@ -24,6 +23,7 @@ public interface EntityValidatorContext {
      * @param clazz        type of entities
      * @param property     the unexpected property
      * @param propertyType type of the unexpected property
+     * @return the validator
      */
-    void handleException(Class<?> clazz, String property, Class<?> propertyType);
+    Validator<?> handleException(Class<?> clazz, String property, Class<?> propertyType);
 }

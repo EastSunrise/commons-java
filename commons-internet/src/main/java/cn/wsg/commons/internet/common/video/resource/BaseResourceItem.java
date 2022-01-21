@@ -1,7 +1,7 @@
 package cn.wsg.commons.internet.common.video.resource;
 
 import cn.wsg.commons.internet.download.DownloadLink;
-import cn.wsg.commons.lang.AssertUtils;
+import cn.wsg.commons.util.AssertUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

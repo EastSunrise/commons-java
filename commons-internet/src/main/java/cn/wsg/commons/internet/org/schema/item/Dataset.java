@@ -8,7 +8,9 @@ import cn.wsg.commons.internet.org.schema.common.Source;
  *
  * @author Kingen
  */
-@RdfClass(equivalentClass = {"http://www.w3.org/ns/dcat#Dataset", "http://rdfs.org/ns/void#Dataset", "http://purl.org/dc/dcmitype/Dataset"})
+@RdfClass(equivalentClass = {
+    "http://www.w3.org/ns/dcat#Dataset", "http://rdfs.org/ns/void#Dataset", "http://purl.org/dc/dcmitype/Dataset"
+})
 @Source({"http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_DatasetClass"})
 public interface Dataset extends CreativeWork {
 }

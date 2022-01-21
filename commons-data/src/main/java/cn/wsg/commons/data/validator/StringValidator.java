@@ -1,8 +1,9 @@
 package cn.wsg.commons.data.validator;
 
 import cn.wsg.commons.data.InvalidValueException;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 
 /**
  * Validates strings.
@@ -17,7 +18,7 @@ public class StringValidator extends AbstractValidator<String> {
         if (!(value instanceof String)) {
             throw new InvalidValueException("Not a string");
         }
-        return (String) value;
+        return (String)value;
     }
 
     /**
@@ -28,8 +29,8 @@ public class StringValidator extends AbstractValidator<String> {
         if (!texts.isEmpty()) {
             long count = texts.stream().filter(String::isBlank).count();
             log.info("Count of blank texts: {}", count);
-            long unstripped = texts.stream().filter(s -> s.length() != s.strip().length()).count();
-            log.info("Count of not stripped texts: {}", unstripped);
+            long notStripped = texts.stream().filter(s -> s.length() != s.strip().length()).count();
+            log.info("Count of not stripped texts: {}", notStripped);
         }
     }
 }

@@ -1,6 +1,6 @@
 package cn.wsg.commons.internet.common.video;
 
-import cn.wsg.commons.lang.AssertUtils;
+import cn.wsg.commons.util.AssertUtils;
 import lombok.Getter;
 
 import java.util.List;

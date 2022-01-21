@@ -2,10 +2,11 @@ package cn.wsg.commons.data.validator;
 
 import cn.wsg.commons.data.Descriptors;
 import cn.wsg.commons.data.InvalidValueException;
-import cn.wsg.commons.lang.NetUtils;
+import cn.wsg.commons.util.NetUtils;
+import lombok.extern.slf4j.Slf4j;
+
 import java.net.URL;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Validates whether the values are valid URLs.
@@ -18,7 +19,7 @@ public class URLValidator extends AbstractValidator<URL> {
     @Override
     public URL convert(Object value) throws InvalidValueException {
         if (value instanceof URL) {
-            return (URL) value;
+            return (URL)value;
         }
         try {
             return NetUtils.createURL(value.toString());
@@ -33,8 +34,7 @@ public class URLValidator extends AbstractValidator<URL> {
     @Override
     public void describe(List<URL> urls) {
         Descriptors.enumerate(urls, url -> {
-            StringBuilder builder = new StringBuilder(url.toString().length())
-                .append(url.getProtocol()).append("://")
+            StringBuilder builder = new StringBuilder(url.toString().length()).append(url.getProtocol()).append("://")
                 .append(url.getHost());
             if (-1 != url.getPort()) {
                 builder.append(":").append(url.getPort());
