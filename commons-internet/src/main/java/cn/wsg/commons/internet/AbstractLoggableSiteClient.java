@@ -20,15 +20,16 @@ import java.io.*;
  * @author Kingen
  */
 @Slf4j
-public abstract class AbstractLoggableSite<U> extends BaseSite implements Loggable<U> {
+public abstract class AbstractLoggableSiteClient<U> extends BaseSiteClient implements Loggable<U> {
 
     private static final File TMPDIR = new File(SystemConsts.SYSTEM_TMPDIR);
 
-    protected AbstractLoggableSite(String name, HttpHost host) {
+    protected AbstractLoggableSiteClient(String name, HttpHost host) {
         super(name, host, SiteHelper.defaultClient(), loadContext(host));
     }
 
-    protected AbstractLoggableSite(String name, HttpHost host, CloseableHttpClient client, HttpClientContext context) {
+    protected AbstractLoggableSiteClient(String name, HttpHost host, CloseableHttpClient client,
+        HttpClientContext context) {
         super(name, host, client, context);
     }
 

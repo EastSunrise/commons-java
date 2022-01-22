@@ -13,16 +13,23 @@ import java.util.Objects;
  */
 public final class NumberUtilsExt {
 
-    private static final char NUMBER_SEPARATOR = ',';
     private static final Map<Character, Integer> SYMBOLS =
         Map.of('I', 1, 'V', 5, 'X', 10, 'L', 50, 'C', 100, 'D', 500, 'M', 1000);
 
     private NumberUtilsExt() {
     }
 
-    public static long parseCommaSeparatedNumber(String text) {
+    /**
+     * Parses a char-separated string as a signed long.
+     *
+     * @param text      the char-separated string, e.g. '21,324'
+     * @param separator the separator
+     * @return the {@code long} represented by the argument
+     * @throws NumberFormatException if the string does not contain a parsable long.
+     */
+    public static long parseSeparatedNumber(String text, char separator) {
         Objects.requireNonNull(text, "Text can't be null");
-        return Long.parseLong(StringUtils.remove(text, NUMBER_SEPARATOR));
+        return Long.parseLong(StringUtils.remove(text, separator));
     }
 
     /**
