@@ -1,6 +1,6 @@
 package cn.wsg.commons.data.common.video;
 
-import cn.wsg.commons.data.common.Region;
+import cn.wsg.commons.data.common.Country;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -17,11 +17,11 @@ import java.util.Objects;
 @Getter
 public class ReleaseDate {
 
-    private final Region country;
+    private final Country country;
     private final Temporal date;
     private final String attribute;
 
-    private ReleaseDate(Region country, Temporal date, String attribute) {
+    private ReleaseDate(Country country, Temporal date, String attribute) {
         this.country = Objects.requireNonNull(country);
         this.date = Objects.requireNonNull(date);
         this.attribute = attribute;
@@ -35,7 +35,7 @@ public class ReleaseDate {
      * @return the parsed release date with a year, a year-month or a localDate
      * @throws DateTimeParseException if the text cannot be parsed
      */
-    public static ReleaseDate parse(Region country, String text, DateTimeFormatter formatter, String attribute) {
+    public static ReleaseDate parse(Country country, String text, DateTimeFormatter formatter, String attribute) {
         try {
             return new ReleaseDate(country, LocalDate.parse(text, formatter), attribute);
         } catch (DateTimeParseException ignored) {

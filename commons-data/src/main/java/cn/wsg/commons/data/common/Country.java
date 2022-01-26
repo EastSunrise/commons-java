@@ -3,13 +3,14 @@ package cn.wsg.commons.data.common;
 import lombok.Getter;
 
 /**
- * Codes for the representation of names of countries and regions: the codes and English names are based on ISO 3166 and
- * the Chinese names are based on GB/T 2659-2000.
+ * Codes for the representation of names of countries and regions: the codes and English names are based on <a
+ * href="https://www.iso.org/iso-3166-country-codes.html">ISO 3166 — Country Codes</a> and the Chinese names are based
+ * on <a href="http://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D7BB83D3A7E05397BE0A0AB82A">GB/T 2659-2000</a>.
  *
  * @author Kingen
  */
 @Getter
-public enum Region {
+public enum Country implements AdministrativeArea {
 
     // regions with officially assigned codes
 
@@ -288,11 +289,31 @@ public enum Region {
     private final String zhShortName;
     private final String enShortName;
 
-    Region(String alpha2, String alpha3, int number, String zhShortName, String enShortName) {
+    Country(String alpha2, String alpha3, int number, String zhShortName, String enShortName) {
         this.alpha2 = alpha2;
         this.alpha3 = alpha3;
         this.number = number;
         this.zhShortName = zhShortName;
         this.enShortName = enShortName;
+    }
+
+    @Override
+    public String getZhName() {
+        return zhShortName;
+    }
+
+    @Override
+    public String getEnName() {
+        return enShortName;
+    }
+
+    @Override
+    public String getCode() {
+        return alpha2;
+    }
+
+    @Override
+    public int getIntCode() {
+        return number;
     }
 }
