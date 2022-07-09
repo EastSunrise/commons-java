@@ -7,8 +7,6 @@ package cn.wsg.commons.data.common;
  */
 public enum BloodType {
 
-    // Four common types of blood
-
     O,
     A,
     B,

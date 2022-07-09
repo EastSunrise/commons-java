@@ -1,21 +1,17 @@
 package cn.wsg.commons.data.download;
 
-import cn.wsg.commons.data.schema.common.SchemaProperty;
-import cn.wsg.commons.data.schema.item.Thing;
-
 /**
  * A download link.
  *
  * @author Kingen
  */
-public interface DownloadLink extends Thing {
+public interface DownloadLink {
 
     /**
      * Returns the URL of the link.
      *
      * @return the URL
      */
-    @SchemaProperty("url")
     String getUrl();
 
     /**
@@ -23,6 +19,5 @@ public interface DownloadLink extends Thing {
      *
      * @return a description
      */
-    @SchemaProperty("description")
     String getDescription();
 }

@@ -7,6 +7,6 @@ import cn.wsg.commons.function.IntCodeSupplier;
 /**
  * @author Kingen
  */
-public interface AdministrativeArea
-    extends cn.wsg.commons.data.schema.item.AdministrativeArea, BilingualDisplayable, IntCodeSupplier, CodeSupplier {
+public interface AdministrativeArea extends BilingualDisplayable, IntCodeSupplier, CodeSupplier {
+
 }
