@@ -1,191 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.wsg.commons</groupId>
-    <artifactId>commons-parent</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+  <groupId>cn.kingen.commons</groupId>
+  <artifactId>commons-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
 
-    <modules>
-        <module>commons-internet</module>
-        <module>commons-lang</module>
-        <module>commons-system</module>
-        <module>commons-web</module>
-        <module>commons-data</module>
-    </modules>
+  <modules>
+    <module>commons-internet</module>
+    <module>commons-lang</module>
+    <module>commons-system</module>
+    <module>commons-web</module>
+    <module>commons-data</module>
+  </modules>
 
-    <properties>
-        <commons-collections4.version>4.4</commons-collections4.version>
-        <commons-lang3.version>3.11</commons-lang3.version>
-        <commons-csv.version>1.8</commons-csv.version>
-        <commons-io.version>2.11.0</commons-io.version>
-        <commons-text.version>1.9</commons-text.version>
-        <httpclient.version>4.5.13</httpclient.version>
-        <jackson-bom.version>2.12.6</jackson-bom.version>
-        <jsoup.version>1.11.3</jsoup.version>
-        <guava.version>31.0.1-jre</guava.version>
-        <junit.version>5.7.2</junit.version>
-        <logback.version>1.2.10</logback.version>
-        <lombok.version>1.18.22</lombok.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <mybatis.version>3.5.7</mybatis.version>
-        <poi.version>4.1.2</poi.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <slf4j.version>1.7.32</slf4j.version>
-        <minio.version>8.2.2</minio.version>
-        <wsg.commons.version>1.0-SNAPSHOT</wsg.commons.version>
-    </properties>
+  <properties>
+    <commons-collections4.version>4.4</commons-collections4.version>
+    <commons-lang3.version>3.11</commons-lang3.version>
+    <commons-csv.version>1.8</commons-csv.version>
+    <commons-io.version>2.11.0</commons-io.version>
+    <commons-text.version>1.9</commons-text.version>
+    <commons-compress.version>1.21</commons-compress.version>
+    <httpclient.version>4.5.13</httpclient.version>
+    <jackson-bom.version>2.12.6</jackson-bom.version>
+    <jsoup.version>1.11.3</jsoup.version>
+    <guava.version>31.0.1-jre</guava.version>
+    <junit.version>5.7.2</junit.version>
+    <logback.version>1.2.10</logback.version>
+    <lombok.version>1.18.22</lombok.version>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <mybatis.version>3.5.7</mybatis.version>
+    <poi.version>4.1.2</poi.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <slf4j.version>1.7.32</slf4j.version>
+    <minio.version>8.2.2</minio.version>
+    <kingen.commons.version>1.0-SNAPSHOT</kingen.commons.version>
+  </properties>
 
+  <dependencies>
+    <!--lombok & logback-->
+    <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <scope>provided</scope>
+      <version>${lombok.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>slf4j-api</artifactId>
+      <groupId>org.slf4j</groupId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>logback-classic</artifactId>
+      <groupId>ch.qos.logback</groupId>
+      <version>${logback.version}</version>
+    </dependency>
+
+    <!--junit 5-->
+    <dependency>
+      <artifactId>junit-jupiter</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <scope>test</scope>
+      <version>${junit.version}</version>
+    </dependency>
+  </dependencies>
+
+  <dependencyManagement>
     <dependencies>
-        <!--lombok & logback-->
-        <dependency>
-            <artifactId>lombok</artifactId>
-            <groupId>org.projectlombok</groupId>
-            <scope>provided</scope>
-            <version>${lombok.version}</version>
-        </dependency>
-        <dependency>
-            <artifactId>slf4j-api</artifactId>
-            <groupId>org.slf4j</groupId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <artifactId>logback-classic</artifactId>
-            <groupId>ch.qos.logback</groupId>
-            <version>${logback.version}</version>
-        </dependency>
+      <!--sub modules-->
+      <dependency>
+        <artifactId>commons-lang</artifactId>
+        <groupId>cn.kingen.commons</groupId>
+        <version>${kingen.commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>cn.kingen.commons</groupId>
+        <artifactId>commons-data</artifactId>
+        <version>${kingen.commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>cn.kingen.commons</groupId>
+        <artifactId>commons-system</artifactId>
+        <version>${kingen.commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>cn.kingen.commons</groupId>
+        <artifactId>commons-internet</artifactId>
+        <version>${kingen.commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>cn.kingen.commons</groupId>
+        <artifactId>commons-web</artifactId>
+        <version>${kingen.commons.version}</version>
+      </dependency>
 
-        <!--junit 5-->
-        <dependency>
-            <artifactId>junit-jupiter</artifactId>
-            <groupId>org.junit.jupiter</groupId>
-            <scope>test</scope>
-            <version>${junit.version}</version>
-        </dependency>
+      <!--apache commons-->
+      <dependency>
+        <artifactId>commons-lang3</artifactId>
+        <groupId>org.apache.commons</groupId>
+        <version>${commons-lang3.version}</version>
+      </dependency>
+      <dependency>
+        <artifactId>commons-collections4</artifactId>
+        <groupId>org.apache.commons</groupId>
+        <version>${commons-collections4.version}</version>
+      </dependency>
+      <dependency>
+        <artifactId>commons-io</artifactId>
+        <groupId>commons-io</groupId>
+        <version>${commons-io.version}</version>
+      </dependency>
+      <dependency>
+        <artifactId>commons-text</artifactId>
+        <groupId>org.apache.commons</groupId>
+        <version>${commons-text.version}</version>
+      </dependency>
+      <dependency>
+        <artifactId>commons-csv</artifactId>
+        <groupId>org.apache.commons</groupId>
+        <version>${commons-csv.version}</version>
+      </dependency>
+      <dependency>
+        <artifactId>poi</artifactId>
+        <groupId>org.apache.poi</groupId>
+        <version>${poi.version}</version>
+      </dependency>
+      <dependency>
+        <artifactId>poi-ooxml</artifactId>
+        <groupId>org.apache.poi</groupId>
+        <version>${poi.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${httpclient.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient-cache</artifactId>
+        <version>${httpclient.version}</version>
+      </dependency>
+
+      <!--jsoup-->
+      <dependency>
+        <groupId>org.jsoup</groupId>
+        <artifactId>jsoup</artifactId>
+        <version>${jsoup.version}</version>
+      </dependency>
+
+      <!--google guava-->
+      <dependency>
+        <artifactId>guava</artifactId>
+        <groupId>com.google.guava</groupId>
+        <version>${guava.version}</version>
+      </dependency>
+
+      <!--complete set of compatible versions of Jackson components-->
+      <dependency>
+        <artifactId>jackson-bom</artifactId>
+        <groupId>com.fasterxml.jackson</groupId>
+        <scope>import</scope>
+        <type>pom</type>
+        <version>${jackson-bom.version}</version>
+      </dependency>
+
+      <!--mybatis-->
+      <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis</artifactId>
+        <version>${mybatis.version}</version>
+      </dependency>
+
+      <!-- MinIO -->
+      <dependency>
+        <artifactId>minio</artifactId>
+        <groupId>io.minio</groupId>
+        <version>${minio.version}</version>
+      </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <!--sub modules-->
-            <dependency>
-                <artifactId>commons-lang</artifactId>
-                <groupId>cn.wsg.commons</groupId>
-                <version>${wsg.commons.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.wsg.commons</groupId>
-                <artifactId>commons-data</artifactId>
-                <version>${wsg.commons.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.wsg.commons</groupId>
-                <artifactId>commons-system</artifactId>
-                <version>${wsg.commons.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.wsg.commons</groupId>
-                <artifactId>commons-internet</artifactId>
-                <version>${wsg.commons.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.wsg.commons</groupId>
-                <artifactId>commons-web</artifactId>
-                <version>${wsg.commons.version}</version>
-            </dependency>
-
-            <!--apache commons-->
-            <dependency>
-                <artifactId>commons-lang3</artifactId>
-                <groupId>org.apache.commons</groupId>
-                <version>${commons-lang3.version}</version>
-            </dependency>
-            <dependency>
-                <artifactId>commons-collections4</artifactId>
-                <groupId>org.apache.commons</groupId>
-                <version>${commons-collections4.version}</version>
-            </dependency>
-            <dependency>
-                <artifactId>commons-io</artifactId>
-                <groupId>commons-io</groupId>
-                <version>${commons-io.version}</version>
-            </dependency>
-            <dependency>
-                <artifactId>commons-text</artifactId>
-                <groupId>org.apache.commons</groupId>
-                <version>${commons-text.version}</version>
-            </dependency>
-            <dependency>
-                <artifactId>commons-csv</artifactId>
-                <groupId>org.apache.commons</groupId>
-                <version>${commons-csv.version}</version>
-            </dependency>
-            <dependency>
-                <artifactId>poi</artifactId>
-                <groupId>org.apache.poi</groupId>
-                <version>${poi.version}</version>
-            </dependency>
-            <dependency>
-                <artifactId>poi-ooxml</artifactId>
-                <groupId>org.apache.poi</groupId>
-                <version>${poi.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>${httpclient.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient-cache</artifactId>
-                <version>${httpclient.version}</version>
-            </dependency>
-
-            <!--jsoup-->
-            <dependency>
-                <groupId>org.jsoup</groupId>
-                <artifactId>jsoup</artifactId>
-                <version>${jsoup.version}</version>
-            </dependency>
-
-            <!--google guava-->
-            <dependency>
-                <artifactId>guava</artifactId>
-                <groupId>com.google.guava</groupId>
-                <version>${guava.version}</version>
-            </dependency>
-
-            <!--complete set of compatible versions of Jackson components-->
-            <dependency>
-                <artifactId>jackson-bom</artifactId>
-                <groupId>com.fasterxml.jackson</groupId>
-                <scope>import</scope>
-                <type>pom</type>
-                <version>${jackson-bom.version}</version>
-            </dependency>
-
-            <!--mybatis-->
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis</artifactId>
-                <version>${mybatis.version}</version>
-            </dependency>
-
-            <!-- MinIO -->
-            <dependency>
-                <artifactId>minio</artifactId>
-                <groupId>io.minio</groupId>
-                <version>${minio.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+  </dependencyManagement>
 </project>
