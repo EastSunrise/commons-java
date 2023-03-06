@@ -2,6 +2,7 @@ package cn.kingen.commons.system.cmd.ffmpeg;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import org.apache.commons.lang3.math.Fraction;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.math.Fraction;
  * @author Kingen
  */
 @Getter
+@JsonTypeName("video")
 public class VideoStream extends AbstractStream {
 
     @JsonProperty(value = "level", required = true)

@@ -1,7 +1,7 @@
 package cn.kingen.commons.data.intangible;
 
 /**
- * A quantity of mass, e.g. '1 kg'.
+ * A quantity of mass, e.g. '3kg'.
  *
  * @author Kingen
  */

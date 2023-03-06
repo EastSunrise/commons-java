@@ -12,8 +12,7 @@ public enum MassUnit implements MeasurementUnit {
 
     KILOGRAM(UnitSystem.INTERNATIONAL, 1, "kg"),
     GRAM(UnitSystem.INTERNATIONAL, 10E-3, "g"),
-    MILLIGRAM(UnitSystem.INTERNATIONAL, 10E-6, "mg"),
-    ;
+    MILLIGRAM(UnitSystem.INTERNATIONAL, 10E-6, "mg");
 
     private final UnitSystem system;
     private final double rate;

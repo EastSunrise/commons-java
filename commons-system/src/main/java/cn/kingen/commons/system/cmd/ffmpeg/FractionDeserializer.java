@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 import org.apache.commons.lang3.math.Fraction;
 
 /**
- * The deserializer that deserializes a string to a {@link Fraction} as a number or a ratio.
+ * The deserializer that deserializes {@link Fraction}s from strings.
  *
  * @author Kingen
  */

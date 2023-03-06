@@ -15,8 +15,7 @@ public enum LengthUnit implements MeasurementUnit {
     DECIMETER(UnitSystem.INTERNATIONAL, 10E-1, "dm"),
     CENTIMETER(UnitSystem.INTERNATIONAL, 10E-2, "cm"),
     MILLIMETER(UnitSystem.INTERNATIONAL, 10E-3, "mm"),
-    MICROMETER(UnitSystem.INTERNATIONAL, 10E-6, "μm"),
-    ;
+    MICROMETER(UnitSystem.INTERNATIONAL, 10E-6, "μm");
 
     private final UnitSystem system;
     private final double rate;

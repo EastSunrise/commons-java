@@ -1,9 +1,10 @@
 package cn.kingen.commons.data.intangible;
 
 /**
- * Quantities such as length, time, mass, e.g. '3 kg' or '4 km'.
+ * Quantities such as length, time, mass, e.g. '3kg' or '4km'.
  *
  * @author Kingen
  */
 public interface Quantity {
+
 }

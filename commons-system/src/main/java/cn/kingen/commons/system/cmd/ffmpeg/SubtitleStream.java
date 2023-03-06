@@ -1,6 +1,7 @@
 package cn.kingen.commons.system.cmd.ffmpeg;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Getter;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Getter;
  * @author Kingen
  */
 @Getter
+@JsonTypeName("subtitle")
 public class SubtitleStream extends AbstractStream {
 
     @JsonProperty("width")
@@ -19,7 +21,4 @@ public class SubtitleStream extends AbstractStream {
 
     @JsonProperty("tags")
     private BaseTags tags;
-
-    SubtitleStream() {
-    }
 }

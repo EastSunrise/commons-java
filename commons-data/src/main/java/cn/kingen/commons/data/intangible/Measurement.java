@@ -1,6 +1,5 @@
 package cn.kingen.commons.data.intangible;
 
-import cn.kingen.commons.lang.util.AssertUtils;
 import java.io.Serializable;
 import java.util.Objects;
 import lombok.Getter;
@@ -21,13 +20,13 @@ public abstract class Measurement<U extends MeasurementUnit>
     private final U unit;
 
     protected Measurement(double value, U unit) {
-        this.value = AssertUtils.requireRange(value, 0D, null);
+        this.value = value;
         this.unit = Objects.requireNonNull(unit, "the measurement unit");
     }
 
     @Override
     public String toString() {
-        return value + " " + unit.getSign();
+        return value + unit.getSign();
     }
 
     @Override

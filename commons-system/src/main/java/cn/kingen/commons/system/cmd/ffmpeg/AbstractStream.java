@@ -1,29 +1,28 @@
 package cn.kingen.commons.system.cmd.ffmpeg;
 
-import cn.kingen.commons.lang.jackson.JsonDurationFormat;
+import cn.kingen.commons.json.JsonDurationFormat;
+import cn.kingen.commons.json.JsonJoinedValue;
+import cn.kingen.commons.lang.Constants;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import java.io.Serializable;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import org.apache.commons.lang3.math.Fraction;
 
 /**
- * This class provides a skeleton implementation of the information about each media stream
- * contained in the input multimedia stream.
+ * This class provides a skeleton implementation of the information about each media stream contained in the input
+ * multimedia stream.
  *
  * @author Kingen
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "codec_type")
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = VideoStream.class, name = "video"),
-    @JsonSubTypes.Type(value = AudioStream.class, name = "audio"),
-    @JsonSubTypes.Type(value = SubtitleStream.class, name = "subtitle"),
-    @JsonSubTypes.Type(value = AttachmentStream.class, name = "attachment"),
-    @JsonSubTypes.Type(value = DataStream.class, name = "data"),
-})
 @Getter
-public abstract class AbstractStream {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "codec_type")
+public abstract class AbstractStream implements Serializable {
 
     @JsonProperty(value = "index", required = true)
     private int index;
@@ -65,11 +64,8 @@ public abstract class AbstractStream {
     @JsonDurationFormat(format = JsonDurationFormat.Format.NUMBER_AS_SECONDS)
     private Duration duration;
 
-    AbstractStream() {
-    }
-
     @Getter
-    public static class Disposition {
+    public static class Disposition implements Serializable {
 
         @JsonProperty(value = "dub", required = true)
         private int dub;
@@ -106,8 +102,67 @@ public abstract class AbstractStream {
 
         @JsonProperty(value = "clean_effects", required = true)
         private int cleanEffects;
+    }
 
-        Disposition() {
-        }
+    /**
+     * Common tags contained in a stream.
+     */
+    @Getter
+    public static class BaseTags implements Serializable {
+
+        @JsonProperty("title")
+        private String title;
+
+        @JsonProperty("language")
+        @JsonAlias("LANGUAGE")
+        private String language;
+
+        @JsonProperty("BPS")
+        private Long bps;
+
+        @JsonProperty("BPS-eng")
+        private Long bpsEng;
+
+        @JsonProperty("DURATION")
+        @JsonDurationFormat(format = JsonDurationFormat.Format.DURATION)
+        private Duration duration;
+
+        @JsonProperty("DURATION-eng")
+        @JsonDurationFormat(format = JsonDurationFormat.Format.DURATION)
+        private Duration durationEng;
+
+        @JsonProperty("NUMBER_OF_FRAMES")
+        private Long numberOfFrames;
+
+        @JsonProperty("NUMBER_OF_FRAMES-eng")
+        private Long numberOfFramesEng;
+
+        @JsonProperty("NUMBER_OF_BYTES")
+        private Long numberOfBytes;
+
+        @JsonProperty("NUMBER_OF_BYTES-eng")
+        private Long numberOfBytesEng;
+
+        @JsonProperty("_STATISTICS_WRITING_APP")
+        private String statisticsWritingApp;
+
+        @JsonProperty("_STATISTICS_WRITING_APP-eng")
+        private String statisticsWritingAppEng;
+
+        @JsonProperty("_STATISTICS_WRITING_DATE_UTC")
+        @JsonFormat(pattern = Constants.PAT_DATE_TIME, timezone = "utc")
+        private LocalDateTime statisticsWritingDateUtc;
+
+        @JsonProperty("_STATISTICS_WRITING_DATE_UTC-eng")
+        @JsonFormat(pattern = Constants.PAT_DATE_TIME, timezone = "utc")
+        private LocalDateTime statisticsWritingDateUtcEng;
+
+        @JsonProperty("_STATISTICS_TAGS")
+        @JsonJoinedValue(delimiter = " ")
+        private List<String> statisticsTags;
+
+        @JsonProperty("_STATISTICS_TAGS-eng")
+        @JsonJoinedValue(delimiter = " ")
+        private List<String> statisticsTagsEng;
     }
 }

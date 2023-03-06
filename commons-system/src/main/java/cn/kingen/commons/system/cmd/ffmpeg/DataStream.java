@@ -1,6 +1,7 @@
 package cn.kingen.commons.system.cmd.ffmpeg;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
@@ -10,6 +11,7 @@ import lombok.Getter;
  * @author Kingen
  */
 @Getter
+@JsonTypeName("data")
 public class DataStream extends AbstractStream {
 
     @JsonProperty(value = "nb_frames", required = true)
@@ -20,9 +22,6 @@ public class DataStream extends AbstractStream {
 
     @JsonProperty("bit_rate")
     private Long bitRate;
-
-    DataStream() {
-    }
 
     @Getter
     public static class DataTags {
@@ -35,8 +34,5 @@ public class DataStream extends AbstractStream {
 
         @JsonProperty("creation_time")
         private LocalDateTime creationTime;
-
-        DataTags() {
-        }
     }
 }

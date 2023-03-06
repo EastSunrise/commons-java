@@ -18,14 +18,17 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.math.Fraction;
 
 /**
- * The executor of ffprobe that gathers information from multimedia streams and prints it in
- * human-and-machine-readable fashion.
+ * The executor of ffprobe that gathers information from multimedia streams and prints it in human-and-machine-readable
+ * fashion.
  *
  * @author Kingen
  * @see <a href="http://www.ffmpeg.org/ffprobe.html">ffprobe Documentation</a>
  */
 public class FfprobeExecutor extends CommandExecutor {
 
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+        .registerModule(new SimpleModule().addDeserializer(Fraction.class, new FractionDeserializer()))
+        .registerModule(new JavaTimeModule());
     private final Charset charset;
 
     public FfprobeExecutor(String executablePath) {
@@ -92,17 +95,10 @@ public class FfprobeExecutor extends CommandExecutor {
         task.execute();
         try {
             String json = IOUtils.toString(task.getInputStream(), charset);
-            return Lazy.MAPPER.readValue(json, Result.class);
+            return MAPPER.readValue(json, Result.class);
         } finally {
             task.destroy();
         }
-    }
-
-    private static class Lazy {
-
-        private static final ObjectMapper MAPPER = new ObjectMapper()
-            .registerModule(new SimpleModule().addDeserializer(Fraction.class, new FractionDeserializer()))
-            .registerModule(new JavaTimeModule());
     }
 
     @Getter

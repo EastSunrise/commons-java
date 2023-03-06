@@ -3,6 +3,7 @@ package cn.kingen.commons.system.cmd.ffmpeg;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ import lombok.Getter;
  * @author Kingen
  */
 @Getter
+@JsonTypeName("audio")
 @JsonIgnoreProperties("side_data_list")
 public class AudioStream extends AbstractStream {
 
@@ -60,9 +62,6 @@ public class AudioStream extends AbstractStream {
     @JsonProperty("loro_surmixlev")
     private Double loroSurmixlev;
 
-    AudioStream() {
-    }
-
     @Getter
     public static class AudioTags extends BaseTags {
 
@@ -75,8 +74,5 @@ public class AudioStream extends AbstractStream {
 
         @JsonProperty("vendor_id")
         private String vendorId;
-
-        AudioTags() {
-        }
     }
 }
