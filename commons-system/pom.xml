@@ -24,7 +24,7 @@
     <dependency>
       <artifactId>minio</artifactId>
       <groupId>io.minio</groupId>
-      <version>8.2.2</version>
+      <version>8.5.2</version>
     </dependency>
   </dependencies>
 </project>
