@@ -18,17 +18,7 @@ class MinioHelperCase {
         MinioClient client = MinioClient.builder().endpoint("127.0.0.1", 9000, false)
             .credentials("minioadmin", "minioadmin")
             .build();
-        String path = MinioHelper.save(client, url, "repository");
-        System.out.println(path);
-    }
-
-    @Test
-    void saveIfAbsent() throws MinioException, IOException, GeneralSecurityException {
-        URL url = new URL("https://www.baidu.com/img/flexible/logo/pc/result.png");
-        MinioClient client = MinioClient.builder().endpoint("127.0.0.1", 9000, false)
-            .credentials("minioadmin", "minioadmin")
-            .build();
-        String path = MinioHelper.saveIfAbsent(client, url, "repository");
+        String path = MinioHelper.save(client, url, "repository", null, null);
         System.out.println(path);
     }
 }

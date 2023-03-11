@@ -21,6 +21,9 @@ public final class NetUtils {
      */
     public static Map<String, List<String>> getQuery(URL url) {
         Map<String, List<String>> queries = new LinkedHashMap<>();
+        if (url.getQuery() == null) {
+            return queries;
+        }
         String[] pairs = url.getQuery().split("&");
         for (String pair : pairs) {
             int idx = pair.indexOf("=");
