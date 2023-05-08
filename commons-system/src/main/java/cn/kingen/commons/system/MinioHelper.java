@@ -9,6 +9,7 @@ import io.minio.PutObjectArgs;
 import io.minio.errors.MinioException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
@@ -55,11 +56,14 @@ public final class MinioHelper {
         }
 
         return save(client, bucketName, objectName, contentType, () -> {
+            HttpURLConnection connection;
             if (proxy == null) {
-                return url.openStream();
+                connection = (HttpURLConnection) url.openConnection();
             } else {
-                return url.openConnection(proxy).getInputStream();
+                connection = (HttpURLConnection) url.openConnection(proxy);
             }
+            connection.setRequestProperty("Referer", url.toString());
+            return connection.getInputStream();
         });
     }
 
