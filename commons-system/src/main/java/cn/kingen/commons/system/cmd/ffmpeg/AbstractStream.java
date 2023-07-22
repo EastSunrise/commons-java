@@ -1,7 +1,7 @@
 package cn.kingen.commons.system.cmd.ffmpeg;
 
-import cn.kingen.commons.json.JsonDurationFormat;
-import cn.kingen.commons.json.JsonJoinedValue;
+import cn.kingen.commons.convert.JsonDurationFormat;
+import cn.kingen.commons.convert.JsonJoinedValue;
 import cn.kingen.commons.lang.Constants;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;

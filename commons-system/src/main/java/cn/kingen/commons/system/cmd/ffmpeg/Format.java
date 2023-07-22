@@ -1,6 +1,6 @@
 package cn.kingen.commons.system.cmd.ffmpeg;
 
-import cn.kingen.commons.json.JsonDurationFormat;
+import cn.kingen.commons.convert.JsonDurationFormat;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

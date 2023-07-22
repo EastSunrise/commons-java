@@ -1,4 +1,4 @@
-package cn.kingen.commons.json;
+package cn.kingen.commons.convert;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

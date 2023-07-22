@@ -1,4 +1,4 @@
-package cn.kingen.commons.json;
+package cn.kingen.commons.convert;
 
 import cn.kingen.commons.lang.Constants;
 import com.fasterxml.jackson.databind.BeanProperty;
