@@ -9,7 +9,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * Utilities for Java {@code Enum}s.
+ * Helper methods for Java enums.
  *
  * @author Kingen
  */

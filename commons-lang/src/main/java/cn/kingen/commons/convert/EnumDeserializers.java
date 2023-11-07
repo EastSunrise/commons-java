@@ -32,9 +32,6 @@ public final class EnumDeserializers {
         @Override
         @SuppressWarnings("unchecked")
         public E deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-            if (p.hasToken(JsonToken.VALUE_NULL)) {
-                return null;
-            }
             Integer code = null;
             if (p.hasToken(JsonToken.VALUE_STRING)) {
                 try {

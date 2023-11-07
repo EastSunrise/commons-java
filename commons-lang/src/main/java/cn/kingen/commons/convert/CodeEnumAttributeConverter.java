@@ -2,7 +2,7 @@ package cn.kingen.commons.convert;
 
 import cn.kingen.commons.lang.CodeSupplier;
 import cn.kingen.commons.util.EnumUtils;
-import javax.persistence.AttributeConverter;
+import jakarta.persistence.AttributeConverter;
 
 /**
  * This class provides a skeleton implementation to convert an enum to a code calling {@link CodeSupplier#getCode()} and
