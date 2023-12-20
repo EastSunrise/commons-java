@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public final class TimeUtils {
 
     private static final Pattern DURATION_REGEX =
-        Pattern.compile("(?:(?<h>\\d{1,2}):)?(?<m>\\d{1,2}):(?<s>\\d{1,2}(?:\\.\\d{1,9})?)");
+        Pattern.compile("(?:(?<h>\\d+):)?(?<m>\\d{1,2}):(?<s>\\d{1,2}(?:\\.\\d{1,9})?)");
 
     /**
      * Parses a text to a duration (accurate to a milliseconds). The minimum is one minutes and the maximum is less than
