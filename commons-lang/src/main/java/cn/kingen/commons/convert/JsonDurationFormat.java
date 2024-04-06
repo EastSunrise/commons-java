@@ -3,6 +3,7 @@ package cn.kingen.commons.convert;
 import cn.kingen.commons.util.TimeUtils;
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -36,7 +37,7 @@ public @interface JsonDurationFormat {
          */
         NUMBER_AS_MILLIS,
         /**
-         * the format like '12:44:66'
+         * the format like "12:44:66"
          *
          * @see TimeUtils#parseDuration(String)
          */

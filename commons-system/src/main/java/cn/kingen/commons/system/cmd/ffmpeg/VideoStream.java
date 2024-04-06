@@ -1,10 +1,8 @@
 package cn.kingen.commons.system.cmd.ffmpeg;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.ToString;
 import org.apache.commons.lang3.math.Fraction;
 
 /**
@@ -13,38 +11,35 @@ import org.apache.commons.lang3.math.Fraction;
  * @author Kingen
  */
 @Getter
-@JsonTypeName("video")
+@ToString(callSuper = true)
 public class VideoStream extends AbstractStream {
 
-    @JsonProperty(value = "level", required = true)
-    private int level;
+    @JsonProperty(value = "level")
+    private Integer level;
 
-    @JsonProperty(value = "pix_fmt", required = true)
+    @JsonProperty(value = "pix_fmt")
     private String pixFormat;
 
-    @JsonProperty(value = "width", required = true)
-    private int width;
+    @JsonProperty(value = "width")
+    private Integer width;
 
-    @JsonProperty(value = "height", required = true)
-    private int height;
+    @JsonProperty(value = "height")
+    private Integer height;
 
-    @JsonProperty(value = "coded_width", required = true)
-    private int codedWidth;
+    @JsonProperty(value = "coded_width")
+    private Integer codedWidth;
 
-    @JsonProperty(value = "coded_height", required = true)
-    private int codedHeight;
+    @JsonProperty(value = "coded_height")
+    private Integer codedHeight;
 
-    @JsonProperty(value = "closed_captions", required = true)
-    private int closedCaptions;
+    @JsonProperty(value = "closed_captions")
+    private Integer closedCaptions;
 
-    @JsonProperty(value = "has_b_frames", required = true)
-    private int hasBFrames;
+    @JsonProperty(value = "has_b_frames")
+    private Integer hasBFrames;
 
-    @JsonProperty(value = "refs", required = true)
-    private int refs;
-
-    @JsonProperty("tags")
-    private VideoTags tags;
+    @JsonProperty(value = "refs")
+    private Integer refs;
 
     @JsonProperty("profile")
     private String profile;
@@ -89,31 +84,5 @@ public class VideoStream extends AbstractStream {
     private Integer nbFrames;
 
     VideoStream() {
-    }
-
-    @Getter
-    public static class VideoTags extends BaseTags {
-
-        @JsonProperty("filename")
-        private String filename;
-
-        @JsonProperty("creation_time")
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", timezone = "utc")
-        private LocalDateTime creationTime;
-
-        @JsonProperty("encoder")
-        private String encoder;
-
-        @JsonProperty("handler_name")
-        private String handlerName;
-
-        @JsonProperty("vendor_id")
-        private String vendorId;
-
-        @JsonProperty("mimetype")
-        private String mimetype;
-
-        VideoTags() {
-        }
     }
 }

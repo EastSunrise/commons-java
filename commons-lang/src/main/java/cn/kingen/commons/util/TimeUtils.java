@@ -1,12 +1,13 @@
 package cn.kingen.commons.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 /**
  * Utilities for {@link java.time} operations.
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 public final class TimeUtils {
 
     private static final Pattern DURATION_REGEX =
-        Pattern.compile("(?:(?<h>\\d+):)?(?<m>\\d{1,2}):(?<s>\\d{1,2}(?:\\.\\d{1,9})?)");
+            Pattern.compile("(?:(?<h>\\d+):)?(?<m>\\d{1,2}):(?<s>\\d{1,2}(?:\\.\\d{1,9})?)");
 
     /**
      * Parses a text to a duration (accurate to a milliseconds). The minimum is one minutes and the maximum is less than

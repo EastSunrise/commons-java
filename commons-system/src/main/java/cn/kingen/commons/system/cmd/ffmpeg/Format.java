@@ -4,9 +4,11 @@ import cn.kingen.commons.convert.JsonDurationFormat;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
-import lombok.Getter;
 
 /**
  * The information about the container format of the input multimedia stream.
@@ -14,38 +16,39 @@ import lombok.Getter;
  * @author Kingen
  */
 @Getter
+@ToString
 public class Format {
 
-    @JsonProperty(value = "filename", required = true)
+    @JsonProperty(value = "filename")
     private String filename;
 
-    @JsonProperty(value = "format_name", required = true)
+    @JsonProperty(value = "format_name")
     private String formatName;
 
-    @JsonProperty(value = "format_long_name", required = true)
+    @JsonProperty(value = "format_long_name")
     private String formatLongName;
 
-    @JsonProperty(value = "size", required = true)
-    private long size;
+    @JsonProperty(value = "size")
+    private Long size;
 
-    @JsonProperty(value = "bit_rate", required = true)
-    private long bitRate;
+    @JsonProperty(value = "bit_rate")
+    private Long bitRate;
 
-    @JsonProperty(value = "duration", required = true)
+    @JsonProperty(value = "duration")
     @JsonDurationFormat(format = JsonDurationFormat.Format.NUMBER_AS_SECONDS)
     private Duration duration;
 
-    @JsonProperty(value = "start_time", required = true)
-    private double startTime;
+    @JsonProperty(value = "start_time")
+    private Double startTime;
 
-    @JsonProperty(value = "probe_score", required = true)
-    private int probeScore;
+    @JsonProperty(value = "probe_score")
+    private Integer probeScore;
 
-    @JsonProperty(value = "nb_programs", required = true)
-    private int nbPrograms;
+    @JsonProperty(value = "nb_programs")
+    private Integer nbPrograms;
 
-    @JsonProperty(value = "nb_streams", required = true)
-    private int nbStreams;
+    @JsonProperty(value = "nb_streams")
+    private Integer nbStreams;
 
     @JsonProperty("tags")
     private FormatTags tags;
@@ -54,6 +57,7 @@ public class Format {
     }
 
     @Getter
+    @ToString
     public static class FormatTags {
 
         @JsonProperty("title")

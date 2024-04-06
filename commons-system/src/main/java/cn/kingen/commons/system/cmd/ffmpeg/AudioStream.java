@@ -1,11 +1,8 @@
 package cn.kingen.commons.system.cmd.ffmpeg;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * The audio stream.
@@ -13,36 +10,32 @@ import lombok.Getter;
  * @author Kingen
  */
 @Getter
-@JsonTypeName("audio")
-@JsonIgnoreProperties("side_data_list")
+@ToString(callSuper = true)
 public class AudioStream extends AbstractStream {
 
     @JsonProperty("profile")
     private String profile;
 
-    @JsonProperty(value = "sample_fmt", required = true)
+    @JsonProperty(value = "sample_fmt")
     private String sampleFormat;
 
-    @JsonProperty(value = "sample_rate", required = true)
-    private int sampleRate;
+    @JsonProperty(value = "sample_rate")
+    private Integer sampleRate;
 
-    @JsonProperty(value = "channels", required = true)
-    private int channels;
+    @JsonProperty(value = "channels")
+    private Integer channels;
 
-    @JsonProperty(value = "channel_layout", required = true)
+    @JsonProperty(value = "channel_layout")
     private String channelLayout;
 
     @JsonProperty("bit_rate")
     private Long bitRate;
 
-    @JsonProperty(value = "bits_per_sample", required = true)
-    private int bitsPerSample;
+    @JsonProperty(value = "bits_per_sample")
+    private Integer bitsPerSample;
 
     @JsonProperty("bits_per_raw_sample")
     private Integer bitsPerRawSample;
-
-    @JsonProperty("tags")
-    private AudioTags tags;
 
     @JsonProperty("nb_frames")
     private Integer nbFrames;
@@ -61,18 +54,4 @@ public class AudioStream extends AbstractStream {
 
     @JsonProperty("loro_surmixlev")
     private Double loroSurmixlev;
-
-    @Getter
-    public static class AudioTags extends BaseTags {
-
-        @JsonProperty("creation_time")
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", timezone = "utc")
-        private LocalDateTime creationTime;
-
-        @JsonProperty("handler_name")
-        private String handlerName;
-
-        @JsonProperty("vendor_id")
-        private String vendorId;
-    }
 }
