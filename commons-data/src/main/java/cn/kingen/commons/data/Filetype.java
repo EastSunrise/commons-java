@@ -59,6 +59,32 @@ public enum Filetype {
     }
 
     public enum Type {
-        IMAGE, VIDEO, AUDIO
+
+        IMAGE,
+        VIDEO,
+        AUDIO;
+
+        /**
+         * Resolves the filetype by the extension or content type.
+         * @param extension the extension of the resource.
+         * @param contentType the content type of the resource.
+         */
+        public Filetype resolveFiletype(String extension, String contentType) {
+            if (extension != null) {
+                for (Filetype filetype : Filetype.values()) {
+                    if (filetype.getType() == this && filetype.getExtension().equalsIgnoreCase(extension)) {
+                        return filetype;
+                    }
+                }
+            }
+            if (contentType != null) {
+                for (Filetype filetype : Filetype.values()) {
+                    if (filetype.getType() == this && filetype.getContentType().equalsIgnoreCase(contentType)) {
+                        return filetype;
+                    }
+                }
+            }
+            return null;
+        }
     }
 }

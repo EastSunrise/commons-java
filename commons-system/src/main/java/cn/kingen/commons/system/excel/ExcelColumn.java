@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Annotated on field to represent a column in an Excel sheet.
  *
- * @author wangsg
+ * @author Kingen
  **/
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
