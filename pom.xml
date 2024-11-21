@@ -23,6 +23,7 @@
 
         <spring-boot.version>3.1.5</spring-boot.version>
         <commons-io.version>2.11.0</commons-io.version>
+        <commons-text.version>1.11.0</commons-text.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <poi.version>5.2.3</poi.version>
         <minio.version>8.5.2</minio.version>
@@ -66,6 +67,11 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${commons-text.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
